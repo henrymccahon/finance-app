@@ -1,0 +1,52 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.85rem 1rem;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.desc {
+  margin: 0.2rem 0 0;
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.amount {
+  font-weight: bold;
+  font-size: 1.15rem;
+  color: #81c784;
+}
+
+.body {
+  padding: 0 1rem 1rem;
+  border-top: 1px solid #2a2a4a;
+}
+
+.historyList {
+  list-style: none;
+  padding: 0;
+  margin-top: 0.5rem;
+}
+
+.deposit {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.4rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  font-size: 0.85rem;
+}
+
+.positive {
+  color: #2a7d2a;
+}
+
+.negative {
+  color: #c00;
+}
+
+.note {
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 0.8rem;
+}

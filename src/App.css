@@ -1,0 +1,12 @@
+#root {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 1.5rem 2rem 3rem;
+  text-align: left;
+}
+
+@media (max-width: 600px) {
+  #root {
+    padding: 1rem 0.75rem 2rem;
+  }
+}

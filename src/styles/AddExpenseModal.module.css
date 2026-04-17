@@ -1,0 +1,6 @@
+.addCatRow {
+  display: flex;
+  gap: 0.5rem;
+  align-items: flex-end;
+  margin-bottom: 0.75rem;
+}

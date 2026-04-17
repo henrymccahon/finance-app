@@ -1,0 +1,155 @@
+.receiptGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
+}
+
+.receipt {
+  border: 1px solid #2a2a4a;
+  border-radius: 0.75rem;
+  background: rgba(255, 255, 255, 0.02);
+  overflow: hidden;
+}
+
+.receiptHeader {
+  padding: 0.6rem 0.85rem;
+  font-weight: 600;
+  font-size: 0.95rem;
+  border-bottom: 1px solid #2a2a4a;
+  background: rgba(100, 108, 255, 0.08);
+}
+
+.receiptDesc {
+  padding: 0.4rem 0.85rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  font-size: 0.85rem;
+}
+
+.receiptAmt {
+  padding: 0.4rem 0.85rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  text-align: right;
+  white-space: nowrap;
+  font-size: 0.85rem;
+}
+
+.receiptShareBadge {
+  display: inline-block;
+  margin-left: 0.4rem;
+  font-size: 0.68rem;
+  padding: 0.1rem 0.35rem;
+  border-radius: 0.2rem;
+  background: #2a2a4a;
+  color: rgba(255, 255, 255, 0.4);
+  vertical-align: middle;
+}
+
+.receiptTotalLabel {
+  padding: 0.55rem 0.85rem;
+  font-weight: bold;
+  border-top: 1px solid #3a3a5c;
+}
+
+.receiptTotalValue {
+  padding: 0.55rem 0.85rem;
+  font-weight: bold;
+  text-align: right;
+  border-top: 1px solid #3a3a5c;
+  color: #e57373;
+}
+
+.grandTotalBar {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1rem;
+  padding: 0.65rem 0.85rem;
+  font-weight: bold;
+  font-size: 1rem;
+  border-top: 1px solid #3a3a5c;
+}
+
+.list {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.row {
+  padding: 0.75rem 1rem;
+  border: 1px solid #2a2a4a;
+  border-radius: 0.75rem;
+  background: #16213e;
+}
+
+.rowMain {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.desc {
+  font-weight: 600;
+  margin-right: 0.5rem;
+}
+
+.amount {
+  font-weight: bold;
+  font-size: 1rem;
+  white-space: nowrap;
+}
+
+.splitDetail {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.35);
+  margin-top: 0.35rem;
+}
+
+.rowActions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.4rem;
+}
+
+.historyCard {
+  padding: 0.85rem 1rem;
+  border: 1px solid #2a2a4a;
+  border-radius: 0.75rem;
+  background: #16213e;
+  margin-bottom: 0.75rem;
+}
+
+.historyHeader {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.historyDetail {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  margin-bottom: 0.4rem;
+}
+
+.historyRow {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  padding: 0.15rem 0;
+}
+
+.historyDetails {
+  margin-top: 0.25rem;
+}
+
+.historyTxn {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.35);
+  padding: 0.1rem 0;
+}

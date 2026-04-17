@@ -1,0 +1,57 @@
+.row {
+  border: 1px solid #2a2a4a;
+  border-radius: 0.75rem;
+  padding: 0.75rem 1rem;
+  margin-bottom: 0.5rem;
+  background: #16213e;
+  transition: border-color 0.15s ease;
+}
+
+.main {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.amounts {
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.amount {
+  font-weight: bold;
+  font-size: 1rem;
+  color: #e57373;
+}
+
+.fullAmount {
+  display: block;
+  font-size: 0.7rem;
+  color: rgba(255, 255, 255, 0.3);
+}
+
+.frequency {
+  display: block;
+  font-size: 0.7rem;
+  color: rgba(255, 255, 255, 0.35);
+  text-transform: capitalize;
+}
+
+.meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 0.4rem;
+}
+
+.monthly {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.actions {
+  display: flex;
+  gap: 0.35rem;
+  align-items: center;
+}

@@ -1,0 +1,66 @@
+.personBlock {
+  margin-bottom: 1.25rem;
+  padding: 0.75rem;
+  border: 1px solid #2a2a4a;
+  border-radius: 0.5rem;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.personHeader {
+  display: flex;
+  justify-content: space-between;
+  font-weight: bold;
+  margin-bottom: 0.65rem;
+  font-size: 0.95rem;
+}
+
+.allocRow {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  margin-bottom: 0.4rem;
+}
+
+.selectFlex {
+  flex: 1;
+}
+
+.amtInput {
+  width: 110px;
+  text-align: right;
+}
+
+.removeBtn {
+  background: none;
+  border: none;
+  color: #e57373;
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 0 0.25rem;
+}
+
+.addRowBtn {
+  background: none;
+  border: none;
+  color: #646cff;
+  cursor: pointer;
+  font-size: 0.8rem;
+  padding: 0;
+}
+
+.allocFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 0.5rem;
+}
+
+.allocated {
+  font-size: 0.85rem;
+  color: #81c784;
+}
+
+.remaining {
+  font-size: 0.85rem;
+  color: #e57373;
+}
