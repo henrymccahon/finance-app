@@ -59,11 +59,11 @@ function CreateDistributionModal({
   return (
     <div className={g.overlay} onClick={onClose} onKeyDown={(e) => e.key === "Escape" && onClose()}>
       <div className={g.modalScrollable} role="dialog" aria-modal="true" aria-labelledby="distribution-modal-title" onClick={(e) => e.stopPropagation()}>
-        <h2 id="distribution-modal-title">{existing ? "Edit" : "Create"} Distribution</h2>
+        <h2 id="distribution-modal-title">{existing ? "Edit" : "Create"} Savings Plan</h2>
 
         <form onSubmit={handleSubmit}>
           <label className={g.label}>
-            Distribution name
+            Plan name
             <input
               value={name}
               onChange={(e) => setName(e.target.value)}
@@ -75,7 +75,7 @@ function CreateDistributionModal({
           </label>
 
           <p className={g.hint}>
-            Set the amount for each bucket. Leave blank or 0 to skip a bucket.
+            Set the amount for each account. Leave blank or 0 to skip.
           </p>
 
           <div className={s.allocationList}>

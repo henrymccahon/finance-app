@@ -18,7 +18,7 @@ function TransferModal({
     e.preventDefault();
     const parsed = parseFloat(amount);
     if (!toId) {
-      setError("Select a destination bucket.");
+      setError("Select a destination account.");
       return;
     }
     if (!parsed || parsed <= 0) {
@@ -43,14 +43,14 @@ function TransferModal({
 
         <form onSubmit={handleSubmit}>
           <label className={g.label}>
-            To bucket
+            To account
             <select
               value={toId}
               onChange={(e) => setToId(e.target.value)}
               required
               className={g.inputBlock}
             >
-              <option value="">Select a bucket…</option>
+              <option value="">Select an account…</option>
               {otherBuckets.map((b) => (
                 <option key={b.id} value={b.id}>
                   {b.name} (${b.amount.toFixed(2)})

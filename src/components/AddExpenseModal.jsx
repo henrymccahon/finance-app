@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import s from "../styles/AddExpenseModal.module.css";
 import g from "../styles/shared.module.css";
+import { equalSplits, getSplits } from "../utils/splits";
 
 const FREQUENCIES = [
   { value: "weekly", label: "Weekly" },
-  { value: "fortnightly", label: "Fortnightly" },
+  { value: "fortnightly", label: "Every 2 Weeks" },
   { value: "monthly", label: "Monthly" },
   { value: "quarterly", label: "Quarterly" },
   { value: "yearly", label: "Yearly" },
@@ -24,7 +25,7 @@ function AddExpenseModal({
   const [category, setCategory] = useState("");
   const [frequency, setFrequency] = useState("monthly");
   const [assignedTo, setAssignedTo] = useState("Shared");
-  const [splitPercent, setSplitPercent] = useState(50);
+  const [splits, setSplits] = useState({});
   const [newCategory, setNewCategory] = useState("");
   const [error, setError] = useState("");
 
@@ -35,7 +36,7 @@ function AddExpenseModal({
       setCategory(existing?.category ?? categories[0] ?? "");
       setFrequency(existing?.frequency ?? "monthly");
       setAssignedTo(existing?.assignedTo ?? "Shared");
-      setSplitPercent(existing?.splitPercent ?? 50);
+      setSplits(existing ? getSplits(existing, people) : equalSplits(people));
       setNewCategory("");
     }
   }, [isOpen]);
@@ -75,7 +76,7 @@ function AddExpenseModal({
       category,
       frequency,
       assignedTo,
-      splitPercent: assignedTo === "Shared" ? splitPercent : 100,
+      splits: assignedTo === "Shared" ? splits : undefined,
     });
 
     onClose();
@@ -145,31 +146,39 @@ function AddExpenseModal({
             </select>
           </label>
 
-          {assignedTo === "Shared" && (
+          {assignedTo === "Shared" && people.length > 1 && (
             <div className={g.splitBox}>
-              <label className={g.label}>
-                Split: {people[0]} pays {splitPercent}% · {people[1]} pays{" "}
-                {100 - splitPercent}%
-                <input
-                  type="range"
-                  min="0"
-                  max="100"
-                  step="5"
-                  value={splitPercent}
-                  onChange={(e) => setSplitPercent(Number(e.target.value))}
-                  className={g.rangeInput}
-                />
-              </label>
-              <div className={g.splitPreview}>
-                <span>
-                  {people[0]}: $
-                  {((parseFloat(amount) || 0) * splitPercent / 100).toFixed(2)}
-                </span>
-                <span>
-                  {people[1]}: $
-                  {((parseFloat(amount) || 0) * (100 - splitPercent) / 100).toFixed(2)}
-                </span>
+              <div className={g.splitLabel}>
+                Split
+                <button
+                  type="button"
+                  onClick={() => setSplits(equalSplits(people))}
+                  className={g.equalBtn}
+                >
+                  Equal
+                </button>
               </div>
+              {people.map((p) => (
+                <div key={p} className={g.splitRow}>
+                  <span className={g.splitName}>{p}</span>
+                  <input
+                    type="number"
+                    min="0"
+                    max="100"
+                    step="1"
+                    value={splits[p] ?? 0}
+                    onChange={(e) => setSplits({ ...splits, [p]: Number(e.target.value) })}
+                    className={g.splitInput}
+                  />
+                  <span className={g.splitPct}>%</span>
+                  <span className={g.splitAmt}>
+                    ${((parseFloat(amount) || 0) * (splits[p] ?? 0) / 100).toFixed(2)}
+                  </span>
+                </div>
+              ))}
+              {Math.round(Object.values(splits).reduce((a, b) => a + b, 0)) !== 100 && (
+                <p className={g.error}>Split must total 100%</p>
+              )}
             </div>
           )}
 

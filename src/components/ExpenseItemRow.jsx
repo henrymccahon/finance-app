@@ -25,7 +25,13 @@ function ExpenseItemRow({ expense, monthlyAmount, onEdit, onDelete, displayAmoun
           {displayAmount != null && displayAmount !== expense.amount && (
             <span className={s.fullAmount}>of ${expense.amount.toFixed(2)}</span>
           )}
-          <span className={s.frequency}>{expense.frequency}</span>
+          <span className={s.frequency}>{{
+            weekly: "Weekly",
+            fortnightly: "Every 2 Weeks",
+            monthly: "Monthly",
+            quarterly: "Quarterly",
+            yearly: "Yearly",
+          }[expense.frequency] || expense.frequency}</span>
         </div>
       </div>
 

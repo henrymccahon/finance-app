@@ -1,0 +1,173 @@
+.topBar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+.summaryPanel {
+  text-align: center;
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.totalBanner {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #81c784;
+  margin: 0.25rem 0 0;
+  letter-spacing: -0.02em;
+}
+
+.totalLabel {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.4);
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.bucketGrid {
+  display: flex;
+  justify-content: center;
+  gap: 1.25rem;
+  margin-top: 1rem;
+  flex-wrap: wrap;
+}
+
+.bucketChip {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15rem;
+  min-width: 80px;
+}
+
+.bucketChipName {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.bucketChipAmount {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.allocHeading {
+  margin: 1.25rem 0 0.5rem;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.4);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-top: 1px solid #2a2a4a;
+  padding-top: 1rem;
+}
+
+.changeLogSection {
+  margin-bottom: 1rem;
+  text-align: left;
+}
+
+.changeLogToggle {
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.85rem;
+  cursor: pointer;
+  padding: 0.4rem 0;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.changeLogToggle:hover {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-top: 0;
+}
+
+.manageSection {
+  margin-top: 1rem;
+}
+
+.manageToggle {
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.85rem;
+  cursor: pointer;
+  padding: 0.4rem 0;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.manageToggle:hover {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.bucketRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  gap: 0.5rem;
+}
+
+.bucketName {
+  font-weight: 500;
+  flex: 1;
+  min-width: 0;
+}
+
+.bucketDesc {
+  color: rgba(255, 255, 255, 0.35);
+  font-size: 0.8rem;
+}
+
+.bucketBalance {
+  font-weight: 600;
+  color: #81c784;
+  white-space: nowrap;
+}
+
+.bucketActions {
+  display: flex;
+  gap: 0.35rem;
+}
+
+.renameForm {
+  display: flex;
+  gap: 0.35rem;
+  flex: 1;
+}
+
+.renameForm input {
+  flex: 1;
+  min-width: 0;
+}
+
+.historyToggle {
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.35);
+  font-size: 0.75rem;
+  cursor: pointer;
+  padding: 0.2rem 0;
+}
+
+.historyToggle:hover {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+@media (max-width: 700px) {
+  .columns {
+    grid-template-columns: 1fr;
+  }
+}

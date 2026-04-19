@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import AddExpenseModal from "../components/AddExpenseModal";
 import ExpenseItemRow from "../components/ExpenseItemRow";
 import CategorySummary from "../components/CategorySummary";
+import { getPersonShare } from "../utils/splits";
 import s from "../styles/ExpensesPage.module.css";
 import g from "../styles/shared.module.css";
 
@@ -76,18 +77,15 @@ function ExpensesPage({ people, expenses, setExpenses, categories, setCategories
     );
   }, [expenses, filterPerson, isSideBySide]);
 
-  function getPersonShare(expense, person) {
-    if (expense.assignedTo !== "Shared") return expense.amount;
-    const pct = expense.splitPercent ?? 50;
-    const personIndex = people.indexOf(person);
-    return expense.amount * (personIndex === 0 ? pct : 100 - pct) / 100;
+  function getShare(expense, person) {
+    return getPersonShare(expense, person, people);
   }
 
   const filteredMonthlyTotal = useMemo(
     () =>
       filteredExpenses.reduce((sum, e) => {
         const amt = filterPerson && filterPerson !== "Shared" && !isSideBySide
-          ? getPersonShare(e, filterPerson)
+          ? getShare(e, filterPerson)
           : e.amount;
         return sum + amt * (FREQUENCY_MULTIPLIERS[e.frequency] || 1);
       }, 0),
@@ -102,7 +100,7 @@ function ExpensesPage({ people, expenses, setExpenses, categories, setCategories
 
   function getMonthlyTotalForPerson(person) {
     return getExpensesForPerson(person).reduce((sum, e) => {
-      const amt = getPersonShare(e, person);
+      const amt = getShare(e, person);
       return sum + amt * (FREQUENCY_MULTIPLIERS[e.frequency] || 1);
     }, 0);
   }
@@ -194,7 +192,7 @@ function ExpensesPage({ people, expenses, setExpenses, categories, setCategories
                   frequencyMultipliers={FREQUENCY_MULTIPLIERS}
                   people={people}
                   filterPerson={person}
-                  getPersonShare={getPersonShare}
+                  getPersonShare={getShare}
                 />
                 {personExpenses.length === 0 ? (
                   <p className={g.empty}>No expenses yet.</p>
@@ -203,7 +201,7 @@ function ExpensesPage({ people, expenses, setExpenses, categories, setCategories
                     {personExpenses.map((expense) => {
                       const displayAmt =
                         expense.assignedTo === "Shared"
-                          ? getPersonShare(expense, person)
+                        ? getShare(expense, person)
                           : undefined;
                       return (
                         <ExpenseItemRow
@@ -233,7 +231,7 @@ function ExpensesPage({ people, expenses, setExpenses, categories, setCategories
             frequencyMultipliers={FREQUENCY_MULTIPLIERS}
             people={people}
             filterPerson={filterPerson}
-            getPersonShare={getPersonShare}
+            getPersonShare={getShare}
           />
 
           {filteredExpenses.length === 0 ? (
@@ -250,7 +248,7 @@ function ExpensesPage({ people, expenses, setExpenses, categories, setCategories
                   {items.map((expense) => {
                     const displayAmt =
                       filterPerson && filterPerson !== "Shared" && expense.assignedTo === "Shared"
-                        ? getPersonShare(expense, filterPerson)
+                        ? getShare(expense, filterPerson)
                         : undefined;
                     return (
                       <ExpenseItemRow

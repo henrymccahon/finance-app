@@ -1,5 +1,4 @@
 import { useState } from "react";
-import AddDepositForm from "./AddDepositForm";
 import s from "../styles/BucketItem.module.css";
 import g from "../styles/shared.module.css";
 
@@ -8,21 +7,12 @@ function BucketItem({
   description,
   amount,
   deposits,
-  onDeposit,
-  onWithdraw,
   onDelete,
   onRename,
-  onTransfer,
-  canTransfer,
-  people,
 }) {
   const [expanded, setExpanded] = useState(false);
   const [isRenaming, setIsRenaming] = useState(false);
   const [newName, setNewName] = useState(name);
-  const [withdrawAmount, setWithdrawAmount] = useState("");
-  const [withdrawNote, setWithdrawNote] = useState("");
-  const [withdrawPerson, setWithdrawPerson] = useState(people[0] ?? "");
-  const [withdrawError, setWithdrawError] = useState("");
   const [confirmDelete, setConfirmDelete] = useState(false);
 
   function handleRenameSubmit(e) {
@@ -31,28 +21,6 @@ function BucketItem({
       onRename(newName.trim());
     }
     setIsRenaming(false);
-  }
-
-  function handleWithdrawSubmit(e) {
-    e.preventDefault();
-    const parsed = parseFloat(withdrawAmount);
-    if (!parsed || parsed <= 0) {
-      setWithdrawError("Enter a valid amount.");
-      return;
-    }
-    if (parsed > amount) {
-      setWithdrawError(`Insufficient balance. Max: $${amount.toFixed(2)}`);
-      return;
-    }
-    setWithdrawError("");
-    onWithdraw({
-      amount: parsed,
-      note: withdrawNote.trim() || "Withdrawal",
-      person: withdrawPerson,
-      date: new Date().toISOString(),
-    });
-    setWithdrawAmount("");
-    setWithdrawNote("");
   }
 
   return (
@@ -103,11 +71,6 @@ function BucketItem({
             >
               Rename
             </button>
-            {canTransfer && (
-              <button onClick={onTransfer} className={g.actionBtn}>
-                Transfer
-              </button>
-            )}
             {!confirmDelete ? (
               <button
                 onClick={() => setConfirmDelete(true)}
@@ -133,44 +96,6 @@ function BucketItem({
               </span>
             )}
           </div>
-
-          {/* Deposit */}
-          <h4 className={g.sectionLabel}>Deposit</h4>
-          <AddDepositForm onDeposit={onDeposit} people={people} />
-
-          {/* Withdraw */}
-          <h4 className={g.sectionLabel}>Withdraw</h4>
-          <form onSubmit={handleWithdrawSubmit} className={g.formRow}>
-            <input
-              type="number"
-              min="0.01"
-              step="0.01"
-              max={amount}
-              value={withdrawAmount}
-              onChange={(e) => setWithdrawAmount(e.target.value)}
-              placeholder="Amount"
-              required
-            />
-            <input
-              value={withdrawNote}
-              onChange={(e) => setWithdrawNote(e.target.value)}
-              placeholder="Note (optional)"
-              maxLength={100}
-            />
-            <select
-              value={withdrawPerson}
-              onChange={(e) => setWithdrawPerson(e.target.value)}
-              className={g.selectInline}
-            >
-              {people.map((p) => (
-                <option key={p} value={p}>
-                  {p}
-                </option>
-              ))}
-            </select>
-            <button type="submit">− Withdraw</button>
-          </form>
-          {withdrawError && <p className={g.error}>{withdrawError}</p>}
 
           {/* Transaction history */}
           {deposits.length > 0 && (

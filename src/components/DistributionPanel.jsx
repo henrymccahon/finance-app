@@ -20,7 +20,7 @@ function DistributionPanel({
 
   return (
     <div className={g.panel}>
-      <h2 style={{ margin: "0 0 0.75rem" }}>Fixed Distributions</h2>
+      <h2 style={{ margin: "0 0 0.75rem" }}>Savings Plans</h2>
 
       {distributions.map((dist) => {
         const total = dist.allocations.reduce((s, a) => s + a.amount, 0);
@@ -43,7 +43,7 @@ function DistributionPanel({
             <div className={s.cardActions}>
               {confirmRunId === dist.id ? (
                 <span className={g.confirmText}>
-                  Distribute ${total.toFixed(2)}?{" "}
+                  Deposit ${total.toFixed(2)}?{" "}
                   <button
                     onClick={() => {
                       onRun(dist.id);
@@ -51,7 +51,7 @@ function DistributionPanel({
                     }}
                     className={s.confirmBtn}
                   >
-                    Yes, run
+                    Yes, apply
                   </button>
                   <button
                     onClick={() => setConfirmRunId(null)}
@@ -65,7 +65,7 @@ function DistributionPanel({
                   onClick={() => setConfirmRunId(dist.id)}
                   className={g.runBtn}
                 >
-                  ▶ Run Distribution
+                  ▶ Apply Plan
                 </button>
               )}
 

@@ -1,4 +1,5 @@
 import { useMemo } from "react";
+import { getSplits } from "../utils/splits";
 import g from "../styles/shared.module.css";
 
 function CategorySummary({ expenses, monthlyTotal, frequencyMultipliers, people, filterPerson, getPersonShare }) {
@@ -19,10 +20,11 @@ function CategorySummary({ expenses, monthlyTotal, frequencyMultipliers, people,
     for (const p of people) map[p] = 0;
     for (const e of expenses) {
       if (e.assignedTo === "Shared") {
-        const pct = e.splitPercent ?? 50;
+        const sp = getSplits(e, people);
         const monthly = e.amount * (frequencyMultipliers[e.frequency] || 1);
-        map[people[0]] = (map[people[0]] || 0) + monthly * pct / 100;
-        map[people[1]] = (map[people[1]] || 0) + monthly * (100 - pct) / 100;
+        for (const p of people) {
+          map[p] = (map[p] || 0) + monthly * (sp[p] ?? 0) / 100;
+        }
       } else {
         const monthly = e.amount * (frequencyMultipliers[e.frequency] || 1);
         map[e.assignedTo] = (map[e.assignedTo] || 0) + monthly;

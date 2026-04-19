@@ -1,19 +1,15 @@
 import { useEffect, useState } from "react";
 import g from "../styles/shared.module.css";
 
-function AddTransactionModal({ isOpen, onClose, onSave, existing, people }) {
+function AddTransactionModal({ isOpen, onClose, onSave, existing }) {
   const [description, setDescription] = useState("");
   const [amount, setAmount] = useState("");
-  const [paidBy, setPaidBy] = useState("Shared");
-  const [splitPercent, setSplitPercent] = useState(50);
   const [error, setError] = useState("");
 
   useEffect(() => {
     if (isOpen) {
       setDescription(existing?.description ?? "");
       setAmount(existing ? String(existing.amount) : "");
-      setPaidBy(existing?.paidBy ?? "Shared");
-      setSplitPercent(existing?.splitPercent ?? 50);
     }
   }, [isOpen]);
 
@@ -35,8 +31,6 @@ function AddTransactionModal({ isOpen, onClose, onSave, existing, people }) {
       ...(existing || {}),
       description: description.trim(),
       amount: parsed,
-      paidBy,
-      splitPercent: paidBy === "Shared" ? splitPercent : null,
     });
     onClose();
   }
@@ -73,53 +67,6 @@ function AddTransactionModal({ isOpen, onClose, onSave, existing, people }) {
               placeholder="0.00"
             />
           </label>
-
-          <label className={g.label}>
-            Responsible
-            <select
-              className={g.inputBlock}
-              value={paidBy}
-              onChange={(e) => setPaidBy(e.target.value)}
-            >
-              <option value="Shared">Shared (split)</option>
-              {people.map((p) => (
-                <option key={p} value={p}>
-                  {p}
-                </option>
-              ))}
-            </select>
-          </label>
-
-          {paidBy === "Shared" && (
-            <div className={g.splitBox}>
-              <div className={g.splitPreview}>
-                <span>{people[0]}: {splitPercent}%</span>
-                <span>{people[1]}: {100 - splitPercent}%</span>
-              </div>
-              <input
-                type="range"
-                min="0"
-                max="100"
-                step="5"
-                value={splitPercent}
-                onChange={(e) => setSplitPercent(Number(e.target.value))}
-                className={g.rangeInput}
-              />
-              {amount && !isNaN(parseFloat(amount)) && (
-                <div className={g.splitPreview}>
-                  <span>
-                    ${((parseFloat(amount) * splitPercent) / 100).toFixed(2)}
-                  </span>
-                  <span>
-                    ${(
-                      (parseFloat(amount) * (100 - splitPercent)) /
-                      100
-                    ).toFixed(2)}
-                  </span>
-                </div>
-              )}
-            </div>
-          )}
 
           {error && <p className={g.error}>{error}</p>}
 

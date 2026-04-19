@@ -15,7 +15,7 @@ function CreateBucketModal({ isOpen, onClose, onCreate, existingNames = [] }) {
       return
     }
     if (existingNames.some((n) => n.toLowerCase() === name.trim().toLowerCase())) {
-      setError('A bucket with this name already exists.')
+      setError('An account with this name already exists.')
       return
     }
     setError('')
@@ -33,13 +33,13 @@ function CreateBucketModal({ isOpen, onClose, onCreate, existingNames = [] }) {
   return (
     <div className={g.overlay} onClick={onClose} onKeyDown={(e) => e.key === "Escape" && onClose()}>
       <div className={g.modal} role="dialog" aria-modal="true" aria-labelledby="bucket-modal-title" onClick={(e) => e.stopPropagation()}>
-        <h2 id="bucket-modal-title">Create Bucket</h2>
+        <h2 id="bucket-modal-title">Create Account</h2>
 
         <form onSubmit={handleSubmit}>
           <input
             value={name}
             onChange={(e) => setName(e.target.value)}
-            placeholder="Bucket name"
+            placeholder="Account name"
             maxLength={50}
           />
           <input
