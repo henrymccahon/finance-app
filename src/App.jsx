@@ -386,9 +386,11 @@ function App() {
               <button onClick={handleExportData} className={s.smallBtn}>
                 Export
               </button>
-              <button onClick={handleLoadSampleData} className={s.smallBtn}>
-                Load Sample Data
-              </button>
+              {["admin@test.com", "test@test.com"].includes(user?.email) && (
+                <button onClick={handleLoadSampleData} className={s.smallBtn}>
+                  Load Sample Data
+                </button>
+              )}
               <button onClick={logout} className={s.smallBtn}>
                 Logout
               </button>
