@@ -3,6 +3,7 @@ import CreateBucketModal from "../components/CreateBucketModal";
 import CreateDistributionModal from "../components/CreateDistributionModal";
 import DistributionPanel from "../components/DistributionPanel";
 import SavingsActionPanel from "../components/SavingsActionPanel";
+import EmptyState from "../components/EmptyState";
 import g from "../styles/shared.module.css";
 import s from "../styles/SavingsPage.module.css";
 
@@ -232,6 +233,14 @@ function SavingsPage({
         existing={editingDist}
         onCreate={handleSaveDistribution}
       />
+
+      {buckets.length === 0 && (
+        <EmptyState
+          icon="🏦"
+          title="No savings accounts yet"
+          description="Create your first account to start tracking where your money goes."
+        />
+      )}
 
       {buckets.length > 0 && (
         <>

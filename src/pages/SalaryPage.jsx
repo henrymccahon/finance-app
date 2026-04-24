@@ -1,6 +1,7 @@
 import { useState, useMemo, useEffect } from "react";
 import { FREQUENCY_MULTIPLIERS } from "../utils/constants";
 import { getPersonShare } from "../utils/splits";
+import EmptyState from "../components/EmptyState";
 import s from "../styles/SalaryPage.module.css";
 import g from "../styles/shared.module.css";
 
@@ -392,9 +393,11 @@ function SalaryPage({
                   </div>
                 </>
               ) : (
-                <p className={g.empty}>
-                  Create some savings accounts first on the Savings page.
-                </p>
+                <EmptyState
+                  icon="🏦"
+                  title="No savings accounts"
+                  description="Create accounts on the Savings page to allocate your pay."
+                />
               )}
             </div>
           </>

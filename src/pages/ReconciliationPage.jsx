@@ -2,6 +2,8 @@ import { useMemo, useState } from "react";
 import AddTransactionModal from "../components/AddTransactionModal";
 import ProcessReconciliationModal from "../components/ProcessReconciliationModal";
 import { equalSplits, getSplits } from "../utils/splits";
+import { useToast } from "../contexts/ToastContext";
+import EmptyState from "../components/EmptyState";
 import s from "../styles/ReconciliationPage.module.css";
 import g from "../styles/shared.module.css";
 
@@ -14,6 +16,7 @@ function ReconciliationPage({
   processedHistory,
   setProcessedHistory,
 }) {
+  const toast = useToast();
   const [isAddOpen, setIsAddOpen] = useState(false);
   const [editingTxn, setEditingTxn] = useState(null);
   const [confirmDeleteId, setConfirmDeleteId] = useState(null);
@@ -27,6 +30,7 @@ function ReconciliationPage({
 
   function handleAdd(txn) {
     setTransactions((prev) => [{ ...txn, id: crypto.randomUUID() }, ...prev]);
+    toast.success("Transaction added");
   }
 
   function handleUpdate(updated) {
@@ -38,6 +42,7 @@ function ReconciliationPage({
 
   function handleDelete(id) {
     setTransactions((prev) => prev.filter((t) => t.id !== id));
+    toast.info("Transaction deleted");
     setSelectedIds((prev) => {
       const next = new Set(prev);
       next.delete(id);
@@ -187,6 +192,9 @@ function ReconciliationPage({
     setProcessedHistory((prev) => [record, ...prev]);
     // Remove only settled transactions
     setTransactions((prev) => prev.filter((t) => !selectedIds.has(t.id)));
+    toast.success(
+      `Settled ${settledTxns.length} transaction${settledTxns.length > 1 ? "s" : ""} — $${selectedTotal.toFixed(2)}`,
+    );
     cancelSettling();
   }
 
@@ -238,9 +246,11 @@ function ReconciliationPage({
 
       {/* Transaction list */}
       {transactions.length === 0 ? (
-        <p className={g.empty}>
-          No transactions added yet. Add your credit card statement items above.
-        </p>
+        <EmptyState
+          icon="📳"
+          title="No transactions yet"
+          description="Add credit card or shared purchases to settle up later."
+        />
       ) : (
         <>
           {isSettling && (

@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import AddExpenseModal from "../components/AddExpenseModal";
 import ExpenseItemRow from "../components/ExpenseItemRow";
 import CategorySummary from "../components/CategorySummary";
+import EmptyState from "../components/EmptyState";
 import { getPersonShare } from "../utils/splits";
 import { FREQUENCY_MULTIPLIERS } from "../utils/constants";
 import s from "../styles/ExpensesPage.module.css";
@@ -195,7 +196,11 @@ function ExpensesPage({
                   getPersonShare={getShare}
                 />
                 {personExpenses.length === 0 ? (
-                  <p className={g.empty}>No expenses yet.</p>
+                  <EmptyState
+                    icon="💸"
+                    title={`No expenses for ${person}`}
+                    description="Add an expense assigned to or shared with this person."
+                  />
                 ) : (
                   <div className={s.list}>
                     {personExpenses.map((expense) => {
@@ -234,10 +239,11 @@ function ExpensesPage({
           />
 
           {filteredExpenses.length === 0 ? (
-            <p className={g.empty}>
-              No recurring expenses{filterPerson ? ` for ${filterPerson}` : ""}{" "}
-              added yet.
-            </p>
+            <EmptyState
+              icon="💸"
+              title={filterPerson ? `No expenses for ${filterPerson}` : "No expenses yet"}
+              description="Add your first recurring expense to start tracking your spending."
+            />
           ) : (
             <div className={s.list}>
               {groupedByPerson.map(([person, items]) => (

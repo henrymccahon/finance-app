@@ -102,9 +102,21 @@ function App() {
   const [nameInputs, setNameInputs] = useState(DEFAULT_PEOPLE);
   const [removalWarning, setRemovalWarning] = useState(null); // { removed, dataCounts, reassignMap, trimmed }
 
-  if (loading) return <div className={s.loading}>Loading your account…</div>;
+  if (loading)
+    return (
+      <div className={s.loading}>
+        <div className={s.spinner} />
+        <p>Loading your account…</p>
+      </div>
+    );
   if (!user) return <LoginPage />;
-  if (!loaded) return <div className={s.loading}>Loading your data…</div>;
+  if (!loaded)
+    return (
+      <div className={s.loading}>
+        <div className={s.spinner} />
+        <p>Loading your data…</p>
+      </div>
+    );
 
   function getDataCountsForPerson(person) {
     const expenseCount = expenses.filter(

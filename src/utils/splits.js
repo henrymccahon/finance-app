@@ -39,9 +39,7 @@ export function getPersonShare(item, person, people) {
   const pct = splits[person] ?? 0;
 
   // Find all people in this split, sorted so the remainder goes to the last
-  const entries = Object.entries(splits).sort(([a], [b]) =>
-    a.localeCompare(b),
-  );
+  const entries = Object.entries(splits).sort(([a], [b]) => a.localeCompare(b));
   const lastPerson = entries[entries.length - 1]?.[0];
 
   if (person === lastPerson) {
@@ -49,8 +47,7 @@ export function getPersonShare(item, person, people) {
     const othersTotal = entries
       .filter(([p]) => p !== lastPerson)
       .reduce(
-        (sum, [, pctVal]) =>
-          sum + Math.floor(item.amount * pctVal) / 100,
+        (sum, [, pctVal]) => sum + Math.floor(item.amount * pctVal) / 100,
         0,
       );
     return Math.round((item.amount - othersTotal) * 100) / 100;

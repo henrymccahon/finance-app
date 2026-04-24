@@ -4,12 +4,15 @@ import "./index.css";
 import App from "./App.jsx";
 import AuthProvider from "./contexts/AuthContext.jsx";
 import ErrorBoundary from "./components/ErrorBoundary.jsx";
+import { ToastProvider } from "./contexts/ToastContext.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <ErrorBoundary>
       <AuthProvider>
-        <App />
+        <ToastProvider>
+          <App />
+        </ToastProvider>
       </AuthProvider>
     </ErrorBoundary>
   </StrictMode>,
