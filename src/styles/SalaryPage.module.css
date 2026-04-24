@@ -1,0 +1,163 @@
+.salaryRow {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  flex-wrap: wrap;
+}
+
+.salaryName {
+  font-weight: 600;
+  min-width: 80px;
+}
+
+.salaryFields {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  flex: 1;
+}
+
+.fieldLabel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.amountInput {
+  width: 140px;
+}
+
+.freqSelect {
+  width: 160px;
+}
+
+.personTabs {
+  display: flex;
+  gap: 0.25rem;
+  margin-top: 1.5rem;
+  border-bottom: 2px solid var(--color-border);
+}
+
+.personTab {
+  padding: 0.6rem 1.25rem;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.personTab:hover {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.personTabActive {
+  color: var(--color-accent);
+  border-bottom-color: var(--color-accent);
+  font-weight: 600;
+}
+
+.personSection {
+  margin-top: 1.5rem;
+  padding: 1.25rem;
+  border: 1px solid var(--color-border);
+  border-radius: 0.75rem;
+  background: var(--color-bg-surface);
+}
+
+.personSectionTabbed {
+  composes: personSection;
+  margin-top: 0;
+  border-top: none;
+  border-radius: 0 0 0.75rem 0.75rem;
+}
+
+.personHeading {
+  margin: 0 0 0.75rem;
+  font-size: 1.15rem;
+}
+
+.infoBanner {
+  display: flex;
+  gap: 2rem;
+  justify-content: center;
+  padding: 1rem 1.5rem;
+  margin: 1rem 0;
+  border: 1px solid var(--color-border);
+  border-radius: 0.75rem;
+  background: var(--color-bg-surface);
+  flex-wrap: wrap;
+}
+
+.infoItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+}
+
+.infoLabel {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.4);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.infoValue {
+  font-size: 1.15rem;
+  font-weight: 600;
+}
+
+.tableWrap {
+  overflow-x: auto;
+}
+
+.cellInput {
+  width: 100px;
+  text-align: right;
+  padding: 0.3rem 0.4rem;
+  font-size: 0.85rem;
+}
+
+.remainingBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1rem;
+  padding: 0.75rem 0.6rem;
+  border-top: 1px solid var(--color-border-light);
+  font-size: 1rem;
+}
+
+@media (max-width: 600px) {
+  .salaryRow {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .salaryFields {
+    flex-direction: column;
+  }
+
+  .amountInput,
+  .freqSelect {
+    width: 100%;
+  }
+
+  .cellInput {
+    width: 80px;
+  }
+
+  .infoBanner {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+}

@@ -5,6 +5,7 @@ import g from "./styles/shared.module.css";
 import SavingsPage from "./pages/SavingsPage";
 import ExpensesPage from "./pages/ExpensesPage";
 import ReconciliationPage from "./pages/ReconciliationPage";
+import SalaryPage from "./pages/SalaryPage";
 import LoginPage from "./pages/LoginPage";
 import { useAuth } from "./contexts/AuthContext";
 import useFirestoreState from "./hooks/useFirestoreState";
@@ -20,7 +21,7 @@ const DEFAULT_CATEGORIES = [
   "Health",
   "Other",
 ];
-const VALID_PAGES = ["savings", "expenses", "reconciliation"];
+const VALID_PAGES = ["savings", "expenses", "reconciliation", "salary"];
 
 function getInitialPage() {
   const hash = window.location.hash.replace("#", "");
@@ -65,6 +66,13 @@ function App() {
     histErr,
     histSaving,
   ] = useFirestoreState(uid, "processedHistory", []);
+  const [
+    salaryConfig,
+    setSalaryConfig,
+    salaryLoaded,
+    salaryErr,
+    salarySaving,
+  ] = useFirestoreState(uid, "salaryConfig", { salaries: [], allocations: [] });
 
   const loaded =
     peopleLoaded &&
@@ -73,7 +81,8 @@ function App() {
     expensesLoaded &&
     catLoaded &&
     txnLoaded &&
-    histLoaded;
+    histLoaded &&
+    salaryLoaded;
   const saving =
     peopleSaving ||
     bucketsSaving ||
@@ -81,7 +90,8 @@ function App() {
     expensesSaving ||
     catSaving ||
     txnSaving ||
-    histSaving;
+    histSaving ||
+    salarySaving;
   const firebaseError =
     peopleErr ||
     bucketsErr ||
@@ -89,7 +99,8 @@ function App() {
     expensesErr ||
     catErr ||
     txnErr ||
-    histErr;
+    histErr ||
+    salaryErr;
 
   // UI-only state
   const [isEditingNames, setIsEditingNames] = useState(false);
@@ -514,6 +525,12 @@ function App() {
           >
             Settle Up
           </button>
+          <button
+            onClick={() => setPage("salary")}
+            className={page === "salary" ? s.tabActive : s.tab}
+          >
+            Pay
+          </button>
         </div>
 
         <div className={s.peopleBar}>
@@ -627,6 +644,15 @@ function App() {
           setTransactions={setTransactions}
           processedHistory={processedHistory}
           setProcessedHistory={setProcessedHistory}
+        />
+      )}
+      {page === "salary" && (
+        <SalaryPage
+          people={people}
+          salaryConfig={salaryConfig}
+          setSalaryConfig={setSalaryConfig}
+          buckets={buckets}
+          expenses={expenses}
         />
       )}
     </div>

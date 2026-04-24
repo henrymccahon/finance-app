@@ -1,5 +1,7 @@
 import { useState } from "react";
+import { doc, setDoc } from "firebase/firestore";
 import { useAuth } from "../contexts/AuthContext";
+import { db } from "../firebase";
 import s from "../styles/LoginPage.module.css";
 
 export default function LoginPage() {
@@ -7,6 +9,9 @@ export default function LoginPage() {
   const [isSignup, setIsSignup] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [phone, setPhone] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [resetSent, setResetSent] = useState(false);
@@ -17,7 +22,20 @@ export default function LoginPage() {
     setLoading(true);
     try {
       if (isSignup) {
-        await signup(email, password);
+        const displayName = `${firstName.trim()} ${lastName.trim()}`.trim();
+        const cred = await signup(email, password, displayName || undefined);
+        await setDoc(doc(db, "users", cred.user.uid, "data", "profile"), {
+          value: {
+            firstName: firstName.trim(),
+            lastName: lastName.trim(),
+            phone: phone.trim(),
+          },
+        });
+        if (firstName.trim()) {
+          await setDoc(doc(db, "users", cred.user.uid, "data", "people"), {
+            value: [firstName.trim()],
+          });
+        }
       } else {
         await login(email, password);
       }
@@ -36,6 +54,35 @@ export default function LoginPage() {
         </p>
 
         <form onSubmit={handleSubmit} className={s.form}>
+          {isSignup && (
+            <>
+              <div className={s.nameRow}>
+                <input
+                  type="text"
+                  placeholder="First name"
+                  value={firstName}
+                  onChange={(e) => setFirstName(e.target.value)}
+                  required
+                  className={s.input}
+                />
+                <input
+                  type="text"
+                  placeholder="Last name"
+                  value={lastName}
+                  onChange={(e) => setLastName(e.target.value)}
+                  required
+                  className={s.input}
+                />
+              </div>
+              <input
+                type="tel"
+                placeholder="Phone number (optional)"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                className={s.input}
+              />
+            </>
+          )}
           <input
             type="email"
             placeholder="Email"

@@ -7,6 +7,7 @@ import {
   GoogleAuthProvider,
   signOut,
   sendPasswordResetEmail,
+  updateProfile,
 } from "firebase/auth";
 import { auth } from "../firebase";
 
@@ -34,8 +35,12 @@ export default function AuthProvider({ children }) {
     return signInWithEmailAndPassword(auth, email, password);
   }
 
-  function signup(email, password) {
-    return createUserWithEmailAndPassword(auth, email, password);
+  async function signup(email, password, displayName) {
+    const cred = await createUserWithEmailAndPassword(auth, email, password);
+    if (displayName) {
+      await updateProfile(cred.user, { displayName });
+    }
+    return cred;
   }
 
   function loginWithGoogle() {
