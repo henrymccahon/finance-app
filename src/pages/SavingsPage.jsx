@@ -6,7 +6,13 @@ import SavingsActionPanel from "../components/SavingsActionPanel";
 import g from "../styles/shared.module.css";
 import s from "../styles/SavingsPage.module.css";
 
-function SavingsPage({ people, buckets, setBuckets, distributions, setDistributions }) {
+function SavingsPage({
+  people,
+  buckets,
+  setBuckets,
+  distributions,
+  setDistributions,
+}) {
   const [isCreateBucketOpen, setIsCreateBucketOpen] = useState(false);
   const [isDistModalOpen, setIsDistModalOpen] = useState(false);
   const [editingDist, setEditingDist] = useState(null);
@@ -192,7 +198,9 @@ function SavingsPage({ people, buckets, setBuckets, distributions, setDistributi
     <section>
       <div className={s.topBar}>
         <h1 style={{ margin: 0, flex: 1 }}>Savings</h1>
-        <button onClick={() => setIsCreateBucketOpen(true)}>+ New Account</button>
+        <button onClick={() => setIsCreateBucketOpen(true)}>
+          + New Account
+        </button>
         {buckets.length > 0 && (
           <button
             onClick={() => {
@@ -235,13 +243,17 @@ function SavingsPage({ people, buckets, setBuckets, distributions, setDistributi
               {buckets.map((b) => (
                 <div key={b.id} className={s.bucketChip}>
                   <span className={s.bucketChipName}>{b.name}</span>
-                  <span className={s.bucketChipAmount}>${b.amount.toFixed(2)}</span>
+                  <span className={s.bucketChipAmount}>
+                    ${b.amount.toFixed(2)}
+                  </span>
                 </div>
               ))}
             </div>
 
             {people.some((p) =>
-              buckets.some((b) => (allocationsByPerson[p]?.[b.name] || 0) !== 0),
+              buckets.some(
+                (b) => (allocationsByPerson[p]?.[b.name] || 0) !== 0,
+              ),
             ) && (
               <>
                 <h3 className={s.allocHeading}>Balance by Person</h3>
@@ -251,7 +263,9 @@ function SavingsPage({ people, buckets, setBuckets, distributions, setDistributi
                       <tr>
                         <th className={g.th}></th>
                         {buckets.map((b) => (
-                          <th key={b.id} className={g.thRight}>{b.name}</th>
+                          <th key={b.id} className={g.thRight}>
+                            {b.name}
+                          </th>
                         ))}
                         <th className={g.thRight}>Total</th>
                       </tr>
@@ -259,21 +273,26 @@ function SavingsPage({ people, buckets, setBuckets, distributions, setDistributi
                     <tbody>
                       {people.map((person) => {
                         const rowTotal = buckets.reduce(
-                          (sum, b) => sum + (allocationsByPerson[person]?.[b.name] || 0),
+                          (sum, b) =>
+                            sum + (allocationsByPerson[person]?.[b.name] || 0),
                           0,
                         );
                         return (
                           <tr key={person}>
                             <td className={g.tdBold}>{person}</td>
                             {buckets.map((b) => {
-                              const amt = allocationsByPerson[person]?.[b.name] || 0;
+                              const amt =
+                                allocationsByPerson[person]?.[b.name] || 0;
                               return (
                                 <td key={b.id} className={g.tdRight}>
                                   {amt !== 0 ? `$${amt.toFixed(2)}` : "–"}
                                 </td>
                               );
                             })}
-                            <td className={g.tdRight} style={{ fontWeight: "bold" }}>
+                            <td
+                              className={g.tdRight}
+                              style={{ fontWeight: "bold" }}
+                            >
                               ${rowTotal.toFixed(2)}
                             </td>
                           </tr>
@@ -293,7 +312,8 @@ function SavingsPage({ people, buckets, setBuckets, distributions, setDistributi
                 className={s.changeLogToggle}
                 onClick={() => setShowChangeLog(!showChangeLog)}
               >
-                {showChangeLog ? "Hide" : "Show"} Change History ({changeLog.length})
+                {showChangeLog ? "Hide" : "Show"} Change History (
+                {changeLog.length})
               </button>
 
               {showChangeLog && (
@@ -369,7 +389,10 @@ function SavingsPage({ people, buckets, setBuckets, distributions, setDistributi
                           className={s.renameForm}
                           onSubmit={(e) => {
                             e.preventDefault();
-                            if (renameValue.trim() && renameValue.trim() !== bucket.name) {
+                            if (
+                              renameValue.trim() &&
+                              renameValue.trim() !== bucket.name
+                            ) {
                               handleRename(bucket.id, renameValue.trim());
                             }
                             setRenamingId(null);
@@ -381,18 +404,31 @@ function SavingsPage({ people, buckets, setBuckets, distributions, setDistributi
                             maxLength={50}
                             autoFocus
                           />
-                          <button type="submit" className={g.actionBtn}>Save</button>
-                          <button type="button" className={g.actionBtn} onClick={() => setRenamingId(null)}>Cancel</button>
+                          <button type="submit" className={g.actionBtn}>
+                            Save
+                          </button>
+                          <button
+                            type="button"
+                            className={g.actionBtn}
+                            onClick={() => setRenamingId(null)}
+                          >
+                            Cancel
+                          </button>
                         </form>
                       ) : (
                         <>
                           <div className={s.bucketName}>
                             {bucket.name}
                             {bucket.description && (
-                              <span className={s.bucketDesc}> — {bucket.description}</span>
+                              <span className={s.bucketDesc}>
+                                {" "}
+                                — {bucket.description}
+                              </span>
                             )}
                           </div>
-                          <span className={s.bucketBalance}>${bucket.amount.toFixed(2)}</span>
+                          <span className={s.bucketBalance}>
+                            ${bucket.amount.toFixed(2)}
+                          </span>
                           <div className={s.bucketActions}>
                             <button
                               className={g.actionBtn}
@@ -406,20 +442,38 @@ function SavingsPage({ people, buckets, setBuckets, distributions, setDistributi
                             <button
                               className={s.historyToggle}
                               onClick={() =>
-                                setExpandedHistory(expandedHistory === bucket.id ? null : bucket.id)
+                                setExpandedHistory(
+                                  expandedHistory === bucket.id
+                                    ? null
+                                    : bucket.id,
+                                )
                               }
                             >
                               History
                             </button>
                             {confirmDeleteId === bucket.id ? (
                               <>
-                                <button className={g.actionBtnDangerBold} onClick={() => { handleDelete(bucket.id); setConfirmDeleteId(null); }}>
+                                <button
+                                  className={g.actionBtnDangerBold}
+                                  onClick={() => {
+                                    handleDelete(bucket.id);
+                                    setConfirmDeleteId(null);
+                                  }}
+                                >
                                   Yes, delete
                                 </button>
-                                <button className={g.actionBtn} onClick={() => setConfirmDeleteId(null)}>No</button>
+                                <button
+                                  className={g.actionBtn}
+                                  onClick={() => setConfirmDeleteId(null)}
+                                >
+                                  No
+                                </button>
                               </>
                             ) : (
-                              <button className={g.actionBtnDanger} onClick={() => setConfirmDeleteId(bucket.id)}>
+                              <button
+                                className={g.actionBtnDanger}
+                                onClick={() => setConfirmDeleteId(bucket.id)}
+                              >
                                 Delete
                               </button>
                             )}
@@ -428,27 +482,51 @@ function SavingsPage({ people, buckets, setBuckets, distributions, setDistributi
                       )}
                     </div>
 
-                    {expandedHistory === bucket.id && bucket.deposits.length > 0 && (
-                      <ul style={{ listStyle: "none", padding: "0 0 0.5rem 0.5rem", margin: 0, fontSize: "0.8rem" }}>
-                        {bucket.deposits.slice(0, 10).map((d, i) => (
-                          <li key={i} style={{ padding: "0.2rem 0", color: "rgba(255,255,255,0.5)" }}>
-                            <span style={{ color: d.amount >= 0 ? "#2a7d2a" : "#c00" }}>
-                              {d.amount >= 0 ? "+" : "−"}${Math.abs(d.amount).toFixed(2)}
-                            </span>
-                            {" "}
-                            {d.person && <strong>{d.person}</strong>}
-                            {d.person && d.note && " · "}
-                            {d.note}
-                            {d.date && ` · ${new Date(d.date).toLocaleDateString()}`}
-                          </li>
-                        ))}
-                        {bucket.deposits.length > 10 && (
-                          <li style={{ color: "rgba(255,255,255,0.3)", padding: "0.2rem 0" }}>
-                            …and {bucket.deposits.length - 10} more
-                          </li>
-                        )}
-                      </ul>
-                    )}
+                    {expandedHistory === bucket.id &&
+                      bucket.deposits.length > 0 && (
+                        <ul
+                          style={{
+                            listStyle: "none",
+                            padding: "0 0 0.5rem 0.5rem",
+                            margin: 0,
+                            fontSize: "0.8rem",
+                          }}
+                        >
+                          {bucket.deposits.slice(0, 10).map((d, i) => (
+                            <li
+                              key={i}
+                              style={{
+                                padding: "0.2rem 0",
+                                color: "rgba(255,255,255,0.5)",
+                              }}
+                            >
+                              <span
+                                style={{
+                                  color: d.amount >= 0 ? "#2a7d2a" : "#c00",
+                                }}
+                              >
+                                {d.amount >= 0 ? "+" : "−"}$
+                                {Math.abs(d.amount).toFixed(2)}
+                              </span>{" "}
+                              {d.person && <strong>{d.person}</strong>}
+                              {d.person && d.note && " · "}
+                              {d.note}
+                              {d.date &&
+                                ` · ${new Date(d.date).toLocaleDateString()}`}
+                            </li>
+                          ))}
+                          {bucket.deposits.length > 10 && (
+                            <li
+                              style={{
+                                color: "rgba(255,255,255,0.3)",
+                                padding: "0.2rem 0",
+                              }}
+                            >
+                              …and {bucket.deposits.length - 10} more
+                            </li>
+                          )}
+                        </ul>
+                      )}
                   </div>
                 ))}
               </div>

@@ -5,7 +5,7 @@
 }
 
 .receipt {
-  border: 1px solid #2a2a4a;
+  border: 1px solid var(--color-border);
   border-radius: 0.75rem;
   background: rgba(255, 255, 255, 0.02);
   overflow: hidden;
@@ -15,7 +15,7 @@
   padding: 0.6rem 0.85rem;
   font-weight: 600;
   font-size: 0.95rem;
-  border-bottom: 1px solid #2a2a4a;
+  border-bottom: 1px solid var(--color-border);
   background: rgba(100, 108, 255, 0.08);
 }
 
@@ -39,7 +39,7 @@
   font-size: 0.68rem;
   padding: 0.1rem 0.35rem;
   border-radius: 0.2rem;
-  background: #2a2a4a;
+  background: var(--color-border);
   color: rgba(255, 255, 255, 0.4);
   vertical-align: middle;
 }
@@ -47,15 +47,15 @@
 .receiptTotalLabel {
   padding: 0.55rem 0.85rem;
   font-weight: bold;
-  border-top: 1px solid #3a3a5c;
+  border-top: 1px solid var(--color-border-light);
 }
 
 .receiptTotalValue {
   padding: 0.55rem 0.85rem;
   font-weight: bold;
   text-align: right;
-  border-top: 1px solid #3a3a5c;
-  color: #e57373;
+  border-top: 1px solid var(--color-border-light);
+  color: var(--color-danger);
 }
 
 .grandTotalBar {
@@ -65,7 +65,7 @@
   padding: 0.65rem 0.85rem;
   font-weight: bold;
   font-size: 1rem;
-  border-top: 1px solid #3a3a5c;
+  border-top: 1px solid var(--color-border-light);
 }
 
 .list {
@@ -77,14 +77,14 @@
 
 .row {
   padding: 0.75rem 1rem;
-  border: 1px solid #2a2a4a;
+  border: 1px solid var(--color-border);
   border-radius: 0.75rem;
-  background: #16213e;
+  background: var(--color-bg-surface);
   transition: border-color 0.15s;
 }
 
 .rowSelected {
-  border-color: #646cff;
+  border-color: var(--color-accent);
   background: rgba(100, 108, 255, 0.06);
 }
 
@@ -99,7 +99,7 @@
   width: 1.1rem;
   height: 1.1rem;
   flex-shrink: 0;
-  accent-color: #646cff;
+  accent-color: var(--color-accent);
   cursor: pointer;
 }
 
@@ -123,7 +123,7 @@
 
 .cancelSettleBtn {
   background: none;
-  border: 1px solid #3a3a5c;
+  border: 1px solid var(--color-border-light);
   border-radius: 0.5rem;
   padding: 0.45rem 1rem;
   cursor: pointer;
@@ -137,7 +137,7 @@
   justify-content: space-between;
   gap: 0.75rem;
   padding: 0.6rem 1rem;
-  border: 1px solid #2a2a4a;
+  border: 1px solid var(--color-border);
   border-radius: 0.75rem;
   margin-top: 0.75rem;
   background: rgba(100, 108, 255, 0.04);
@@ -168,7 +168,7 @@
 
 .bulkBtn {
   background: none;
-  border: 1px solid #3a3a5c;
+  border: 1px solid var(--color-border-light);
   border-radius: 0.375rem;
   padding: 0.2rem 0.5rem;
   cursor: pointer;
@@ -177,7 +177,7 @@
 }
 
 .bulkBtn:hover {
-  border-color: #646cff;
+  border-color: var(--color-accent);
   color: #fff;
 }
 
@@ -192,8 +192,8 @@
 .assignSelect {
   padding: 0.3rem 0.5rem;
   font-size: 0.85rem;
-  background: #1a1a2e;
-  border: 1px solid #3a3a5c;
+  background: var(--color-bg-deep);
+  border: 1px solid var(--color-border-light);
   border-radius: 0.375rem;
   color: #fff;
 }
@@ -221,8 +221,8 @@
   padding: 0.2rem 0.35rem;
   font-size: 0.8rem;
   text-align: right;
-  background: #16213e;
-  border: 1px solid #3a3a5c;
+  background: var(--color-bg-surface);
+  border: 1px solid var(--color-border-light);
   border-radius: 0.375rem;
   color: #fff;
 }
@@ -246,9 +246,9 @@
 
 .historyCard {
   padding: 0.85rem 1rem;
-  border: 1px solid #2a2a4a;
+  border: 1px solid var(--color-border);
   border-radius: 0.75rem;
-  background: #16213e;
+  background: var(--color-bg-surface);
   margin-bottom: 0.75rem;
 }
 

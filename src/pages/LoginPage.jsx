@@ -92,8 +92,11 @@ export default function LoginPage() {
         <button
           onClick={async () => {
             setError("");
-            try { await loginWithGoogle(); }
-            catch (err) { setError(friendlyError(err.code)); }
+            try {
+              await loginWithGoogle();
+            } catch (err) {
+              setError(friendlyError(err.code));
+            }
           }}
           className={s.googleBtn}
         >

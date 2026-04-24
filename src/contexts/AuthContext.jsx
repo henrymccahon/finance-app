@@ -50,11 +50,15 @@ export default function AuthProvider({ children }) {
     return sendPasswordResetEmail(auth, email);
   }
 
-  const value = { user, loading, login, signup, loginWithGoogle, logout, resetPassword };
+  const value = {
+    user,
+    loading,
+    login,
+    signup,
+    loginWithGoogle,
+    logout,
+    resetPassword,
+  };
 
-  return (
-    <AuthContext.Provider value={value}>
-      {children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

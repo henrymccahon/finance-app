@@ -4,7 +4,13 @@ import s from "../styles/SavingsActionPanel.module.css";
 
 const ACTIONS = ["Deposit", "Withdraw", "Transfer"];
 
-function SavingsActionPanel({ buckets, people, onDeposit, onWithdraw, onTransfer }) {
+function SavingsActionPanel({
+  buckets,
+  people,
+  onDeposit,
+  onWithdraw,
+  onTransfer,
+}) {
   const [selectedBucketId, setSelectedBucketId] = useState("");
   const [action, setAction] = useState("Deposit");
   const [amount, setAmount] = useState("");
@@ -49,7 +55,9 @@ function SavingsActionPanel({ buckets, people, onDeposit, onWithdraw, onTransfer
       reset();
     } else if (action === "Withdraw") {
       if (parsed > selectedBucket.amount) {
-        setError(`Insufficient balance. Max: $${selectedBucket.amount.toFixed(2)}`);
+        setError(
+          `Insufficient balance. Max: $${selectedBucket.amount.toFixed(2)}`,
+        );
         return;
       }
       onWithdraw(selectedBucketId, {
@@ -66,12 +74,16 @@ function SavingsActionPanel({ buckets, people, onDeposit, onWithdraw, onTransfer
         return;
       }
       if (parsed > selectedBucket.amount) {
-        setError(`Insufficient balance. Max: $${selectedBucket.amount.toFixed(2)}`);
+        setError(
+          `Insufficient balance. Max: $${selectedBucket.amount.toFixed(2)}`,
+        );
         return;
       }
       onTransfer(selectedBucketId, transferToId, parsed);
       const toBucket = buckets.find((b) => b.id === transferToId);
-      setSuccess(`Transferred $${parsed.toFixed(2)} from ${selectedBucket.name} to ${toBucket?.name}`);
+      setSuccess(
+        `Transferred $${parsed.toFixed(2)} from ${selectedBucket.name} to ${toBucket?.name}`,
+      );
       reset();
       setTransferToId("");
     }
@@ -87,7 +99,11 @@ function SavingsActionPanel({ buckets, people, onDeposit, onWithdraw, onTransfer
         {ACTIONS.map((a) => (
           <button
             key={a}
-            onClick={() => { setAction(a); setError(""); setSuccess(""); }}
+            onClick={() => {
+              setAction(a);
+              setError("");
+              setSuccess("");
+            }}
             className={action === a ? s.actionTabActive : s.actionTab}
           >
             {a}
@@ -101,7 +117,11 @@ function SavingsActionPanel({ buckets, people, onDeposit, onWithdraw, onTransfer
             {action === "Transfer" ? "From" : "Account"}
             <select
               value={selectedBucketId}
-              onChange={(e) => { setSelectedBucketId(e.target.value); setError(""); setSuccess(""); }}
+              onChange={(e) => {
+                setSelectedBucketId(e.target.value);
+                setError("");
+                setSuccess("");
+              }}
               className={s.select}
             >
               <option value="">Select account…</option>
@@ -141,7 +161,11 @@ function SavingsActionPanel({ buckets, people, onDeposit, onWithdraw, onTransfer
               type="number"
               min="0.01"
               step="0.01"
-              max={action === "Deposit" ? 999999 : (selectedBucket?.amount ?? 999999)}
+              max={
+                action === "Deposit"
+                  ? 999999
+                  : (selectedBucket?.amount ?? 999999)
+              }
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
               placeholder="0.00"
@@ -172,7 +196,9 @@ function SavingsActionPanel({ buckets, people, onDeposit, onWithdraw, onTransfer
                 className={s.select}
               >
                 {people.map((p) => (
-                  <option key={p} value={p}>{p}</option>
+                  <option key={p} value={p}>
+                    {p}
+                  </option>
                 ))}
               </select>
             </label>

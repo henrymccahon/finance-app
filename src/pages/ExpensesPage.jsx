@@ -3,6 +3,7 @@ import AddExpenseModal from "../components/AddExpenseModal";
 import ExpenseItemRow from "../components/ExpenseItemRow";
 import CategorySummary from "../components/CategorySummary";
 import { getPersonShare } from "../utils/splits";
+import { FREQUENCY_MULTIPLIERS } from "../utils/constants";
 import s from "../styles/ExpensesPage.module.css";
 import g from "../styles/shared.module.css";
 
@@ -17,30 +18,25 @@ const DEFAULT_CATEGORIES = [
   "Other",
 ];
 
-const FREQUENCY_MULTIPLIERS = {
-  weekly: 52 / 12,
-  fortnightly: 26 / 12,
-  monthly: 1,
-  quarterly: 1 / 3,
-  yearly: 1 / 12,
-};
 
-function ExpensesPage({ people, expenses, setExpenses, categories, setCategories }) {
+
+function ExpensesPage({
+  people,
+  expenses,
+  setExpenses,
+  categories,
+  setCategories,
+}) {
   const [isAddOpen, setIsAddOpen] = useState(false);
   const [editingExpense, setEditingExpense] = useState(null);
   const [filterPerson, setFilterPerson] = useState("");
 
   function handleAddExpense(expense) {
-    setExpenses((prev) => [
-      { ...expense, id: crypto.randomUUID() },
-      ...prev,
-    ]);
+    setExpenses((prev) => [{ ...expense, id: crypto.randomUUID() }, ...prev]);
   }
 
   function handleUpdateExpense(updated) {
-    setExpenses((prev) =>
-      prev.map((e) => (e.id === updated.id ? updated : e)),
-    );
+    setExpenses((prev) => prev.map((e) => (e.id === updated.id ? updated : e)));
     setEditingExpense(null);
   }
 
@@ -84,9 +80,10 @@ function ExpensesPage({ people, expenses, setExpenses, categories, setCategories
   const filteredMonthlyTotal = useMemo(
     () =>
       filteredExpenses.reduce((sum, e) => {
-        const amt = filterPerson && filterPerson !== "Shared" && !isSideBySide
-          ? getShare(e, filterPerson)
-          : e.amount;
+        const amt =
+          filterPerson && filterPerson !== "Shared" && !isSideBySide
+            ? getShare(e, filterPerson)
+            : e.amount;
         return sum + amt * (FREQUENCY_MULTIPLIERS[e.frequency] || 1);
       }, 0),
     [filteredExpenses, filterPerson, isSideBySide],
@@ -143,7 +140,9 @@ function ExpensesPage({ people, expenses, setExpenses, categories, setCategories
         </button>
         <button
           onClick={() => setFilterPerson("Shared")}
-          className={filterPerson === "Shared" ? s.filterBtnActive : s.filterBtn}
+          className={
+            filterPerson === "Shared" ? s.filterBtnActive : s.filterBtn
+          }
         >
           Shared
         </button>
@@ -156,10 +155,14 @@ function ExpensesPage({ people, expenses, setExpenses, categories, setCategories
             {p}
           </button>
         ))}
-        <span className={s.filterLabel} style={{ marginLeft: "0.5rem" }}>|</span>
+        <span className={s.filterLabel} style={{ marginLeft: "0.5rem" }}>
+          |
+        </span>
         <button
           onClick={() => setFilterPerson("__sideBySide__")}
-          className={filterPerson === "__sideBySide__" ? s.filterBtnActive : s.filterBtn}
+          className={
+            filterPerson === "__sideBySide__" ? s.filterBtnActive : s.filterBtn
+          }
         >
           Side by Side
         </button>
@@ -189,7 +192,6 @@ function ExpensesPage({ people, expenses, setExpenses, categories, setCategories
                 <CategorySummary
                   expenses={personExpenses}
                   monthlyTotal={personTotal}
-                  frequencyMultipliers={FREQUENCY_MULTIPLIERS}
                   people={people}
                   filterPerson={person}
                   getPersonShare={getShare}
@@ -201,7 +203,7 @@ function ExpensesPage({ people, expenses, setExpenses, categories, setCategories
                     {personExpenses.map((expense) => {
                       const displayAmt =
                         expense.assignedTo === "Shared"
-                        ? getShare(expense, person)
+                          ? getShare(expense, person)
                           : undefined;
                       return (
                         <ExpenseItemRow
@@ -228,7 +230,6 @@ function ExpensesPage({ people, expenses, setExpenses, categories, setCategories
           <CategorySummary
             expenses={filteredExpenses}
             monthlyTotal={filteredMonthlyTotal}
-            frequencyMultipliers={FREQUENCY_MULTIPLIERS}
             people={people}
             filterPerson={filterPerson}
             getPersonShare={getShare}
@@ -236,7 +237,8 @@ function ExpensesPage({ people, expenses, setExpenses, categories, setCategories
 
           {filteredExpenses.length === 0 ? (
             <p className={g.empty}>
-              No recurring expenses{filterPerson ? ` for ${filterPerson}` : ""} added yet.
+              No recurring expenses{filterPerson ? ` for ${filterPerson}` : ""}{" "}
+              added yet.
             </p>
           ) : (
             <div className={s.list}>
@@ -247,7 +249,9 @@ function ExpensesPage({ people, expenses, setExpenses, categories, setCategories
                   )}
                   {items.map((expense) => {
                     const displayAmt =
-                      filterPerson && filterPerson !== "Shared" && expense.assignedTo === "Shared"
+                      filterPerson &&
+                      filterPerson !== "Shared" &&
+                      expense.assignedTo === "Shared"
                         ? getShare(expense, filterPerson)
                         : undefined;
                     return (

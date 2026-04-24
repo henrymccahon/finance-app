@@ -36,8 +36,18 @@ function AddTransactionModal({ isOpen, onClose, onSave, existing }) {
   }
 
   return (
-    <div className={g.overlay} onClick={onClose} onKeyDown={(e) => e.key === "Escape" && onClose()}>
-      <div className={g.modal} role="dialog" aria-modal="true" aria-labelledby="transaction-modal-title" onClick={(e) => e.stopPropagation()}>
+    <div
+      className={g.overlay}
+      onClick={onClose}
+      onKeyDown={(e) => e.key === "Escape" && onClose()}
+    >
+      <div
+        className={g.modal}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="transaction-modal-title"
+        onClick={(e) => e.stopPropagation()}
+      >
         <h2 id="transaction-modal-title" style={{ margin: "0 0 1rem" }}>
           {existing ? "Edit" : "Add"} Transaction
         </h2>
@@ -74,9 +84,7 @@ function AddTransactionModal({ isOpen, onClose, onSave, existing }) {
             <button type="button" onClick={onClose}>
               Cancel
             </button>
-            <button type="submit">
-              {existing ? "Update" : "Add"}
-            </button>
+            <button type="submit">{existing ? "Update" : "Add"}</button>
           </div>
         </form>
       </div>

@@ -83,9 +83,21 @@ function AddExpenseModal({
   }
 
   return (
-    <div className={g.overlay} onClick={onClose} onKeyDown={(e) => e.key === "Escape" && onClose()}>
-      <div className={g.modal} role="dialog" aria-modal="true" aria-labelledby="expense-modal-title" onClick={(e) => e.stopPropagation()}>
-        <h2 id="expense-modal-title">{existing ? "Edit" : "Add"} Recurring Expense</h2>
+    <div
+      className={g.overlay}
+      onClick={onClose}
+      onKeyDown={(e) => e.key === "Escape" && onClose()}
+    >
+      <div
+        className={g.modal}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="expense-modal-title"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <h2 id="expense-modal-title">
+          {existing ? "Edit" : "Add"} Recurring Expense
+        </h2>
 
         <form onSubmit={handleSubmit}>
           <label className={g.label}>
@@ -167,18 +179,23 @@ function AddExpenseModal({
                     max="100"
                     step="1"
                     value={splits[p] ?? 0}
-                    onChange={(e) => setSplits({ ...splits, [p]: Number(e.target.value) })}
+                    onChange={(e) =>
+                      setSplits({ ...splits, [p]: Number(e.target.value) })
+                    }
                     className={g.splitInput}
                   />
                   <span className={g.splitPct}>%</span>
                   <span className={g.splitAmt}>
-                    ${((parseFloat(amount) || 0) * (splits[p] ?? 0) / 100).toFixed(2)}
+                    $
+                    {(
+                      ((parseFloat(amount) || 0) * (splits[p] ?? 0)) /
+                      100
+                    ).toFixed(2)}
                   </span>
                 </div>
               ))}
-              {Math.round(Object.values(splits).reduce((a, b) => a + b, 0)) !== 100 && (
-                <p className={g.error}>Split must total 100%</p>
-              )}
+              {Math.round(Object.values(splits).reduce((a, b) => a + b, 0)) !==
+                100 && <p className={g.error}>Split must total 100%</p>}
             </div>
           )}
 

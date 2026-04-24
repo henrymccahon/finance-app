@@ -6,7 +6,7 @@
   display: flex;
   gap: 0.25rem;
   margin-bottom: 1rem;
-  background: #1a1a2e;
+  background: var(--color-bg-deep);
   border-radius: 0.5rem;
   padding: 0.25rem;
 }
@@ -25,7 +25,7 @@
 
 .actionTabActive {
   composes: actionTab;
-  background: #646cff;
+  background: var(--color-accent);
   color: #fff;
   font-weight: 600;
 }
@@ -66,14 +66,14 @@
 .submitBtn {
   padding: 0.5rem 1.5rem;
   font-weight: 600;
-  background: #646cff;
+  background: var(--color-accent);
   color: #fff;
-  border: 1px solid #646cff;
+  border: 1px solid var(--color-accent);
 }
 
 .submitBtn:hover {
-  background: #535bf2;
-  border-color: #535bf2;
+  background: var(--color-accent-hover);
+  border-color: var(--color-accent-hover);
 }
 
 .success {

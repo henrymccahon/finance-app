@@ -10,7 +10,16 @@ import { useAuth } from "./contexts/AuthContext";
 import useFirestoreState from "./hooks/useFirestoreState";
 
 const DEFAULT_PEOPLE = ["Person 1"];
-const DEFAULT_CATEGORIES = ["Rent", "Utilities", "Transport", "Insurance", "Subscriptions", "Food", "Health", "Other"];
+const DEFAULT_CATEGORIES = [
+  "Rent",
+  "Utilities",
+  "Transport",
+  "Insurance",
+  "Subscriptions",
+  "Food",
+  "Health",
+  "Other",
+];
 const VALID_PAGES = ["savings", "expenses", "reconciliation"];
 
 function getInitialPage() {
@@ -37,17 +46,50 @@ function App() {
   }, []);
 
   // Each piece of state is its own Firestore document
-  const [people, setPeople, peopleLoaded, peopleErr, peopleSaving] = useFirestoreState(uid, "people", DEFAULT_PEOPLE);
-  const [buckets, setBuckets, bucketsLoaded, bucketsErr, bucketsSaving] = useFirestoreState(uid, "buckets", []);
-  const [distributions, setDistributions, distLoaded, distErr, distSaving] = useFirestoreState(uid, "distributions", []);
-  const [expenses, setExpenses, expensesLoaded, expensesErr, expensesSaving] = useFirestoreState(uid, "expenses", []);
-  const [categories, setCategories, catLoaded, catErr, catSaving] = useFirestoreState(uid, "categories", DEFAULT_CATEGORIES);
-  const [transactions, setTransactions, txnLoaded, txnErr, txnSaving] = useFirestoreState(uid, "transactions", []);
-  const [processedHistory, setProcessedHistory, histLoaded, histErr, histSaving] = useFirestoreState(uid, "processedHistory", []);
+  const [people, setPeople, peopleLoaded, peopleErr, peopleSaving] =
+    useFirestoreState(uid, "people", DEFAULT_PEOPLE);
+  const [buckets, setBuckets, bucketsLoaded, bucketsErr, bucketsSaving] =
+    useFirestoreState(uid, "buckets", []);
+  const [distributions, setDistributions, distLoaded, distErr, distSaving] =
+    useFirestoreState(uid, "distributions", []);
+  const [expenses, setExpenses, expensesLoaded, expensesErr, expensesSaving] =
+    useFirestoreState(uid, "expenses", []);
+  const [categories, setCategories, catLoaded, catErr, catSaving] =
+    useFirestoreState(uid, "categories", DEFAULT_CATEGORIES);
+  const [transactions, setTransactions, txnLoaded, txnErr, txnSaving] =
+    useFirestoreState(uid, "transactions", []);
+  const [
+    processedHistory,
+    setProcessedHistory,
+    histLoaded,
+    histErr,
+    histSaving,
+  ] = useFirestoreState(uid, "processedHistory", []);
 
-  const loaded = peopleLoaded && bucketsLoaded && distLoaded && expensesLoaded && catLoaded && txnLoaded && histLoaded;
-  const saving = peopleSaving || bucketsSaving || distSaving || expensesSaving || catSaving || txnSaving || histSaving;
-  const firebaseError = peopleErr || bucketsErr || distErr || expensesErr || catErr || txnErr || histErr;
+  const loaded =
+    peopleLoaded &&
+    bucketsLoaded &&
+    distLoaded &&
+    expensesLoaded &&
+    catLoaded &&
+    txnLoaded &&
+    histLoaded;
+  const saving =
+    peopleSaving ||
+    bucketsSaving ||
+    distSaving ||
+    expensesSaving ||
+    catSaving ||
+    txnSaving ||
+    histSaving;
+  const firebaseError =
+    peopleErr ||
+    bucketsErr ||
+    distErr ||
+    expensesErr ||
+    catErr ||
+    txnErr ||
+    histErr;
 
   // UI-only state
   const [isEditingNames, setIsEditingNames] = useState(false);
@@ -60,15 +102,25 @@ function App() {
 
   function getDataCountsForPerson(person) {
     const expenseCount = expenses.filter(
-      (e) => e.assignedTo === person || (e.assignedTo === "Shared" && e.splits?.[person])
+      (e) =>
+        e.assignedTo === person ||
+        (e.assignedTo === "Shared" && e.splits?.[person]),
     ).length;
     const txnCount = transactions.filter(
-      (t) => t.paidBy === person || (t.paidBy === "Shared" && t.splits?.[person])
+      (t) =>
+        t.paidBy === person || (t.paidBy === "Shared" && t.splits?.[person]),
     ).length;
     const depositCount = buckets.reduce(
-      (sum, b) => sum + (b.deposits || []).filter((d) => d.person === person).length, 0
+      (sum, b) =>
+        sum + (b.deposits || []).filter((d) => d.person === person).length,
+      0,
     );
-    return { expenseCount, txnCount, depositCount, total: expenseCount + txnCount + depositCount };
+    return {
+      expenseCount,
+      txnCount,
+      depositCount,
+      total: expenseCount + txnCount + depositCount,
+    };
   }
 
   function handleSaveNames(e) {
@@ -123,7 +175,7 @@ function App() {
           updated.splits = newSplits;
         }
         return updated;
-      })
+      }),
     );
 
     // Reassign transactions
@@ -142,7 +194,7 @@ function App() {
           updated.splits = newSplits;
         }
         return updated;
-      })
+      }),
     );
 
     // Reassign bucket deposits
@@ -150,9 +202,9 @@ function App() {
       prev.map((bucket) => ({
         ...bucket,
         deposits: (bucket.deposits || []).map((d) =>
-          reassignMap[d.person] ? { ...d, person: reassignMap[d.person] } : d
+          reassignMap[d.person] ? { ...d, person: reassignMap[d.person] } : d,
         ),
-      }))
+      })),
     );
 
     setPeople(trimmed);
@@ -171,7 +223,9 @@ function App() {
       transactions,
       processedHistory,
     };
-    const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+    const blob = new Blob([JSON.stringify(data, null, 2)], {
+      type: "application/json",
+    });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
@@ -183,7 +237,16 @@ function App() {
   function handleLoadSampleData() {
     const now = new Date().toISOString();
     setPeople(["Alice", "Bob"]);
-    setCategories(["Rent", "Utilities", "Transport", "Insurance", "Subscriptions", "Food", "Health", "Other"]);
+    setCategories([
+      "Rent",
+      "Utilities",
+      "Transport",
+      "Insurance",
+      "Subscriptions",
+      "Food",
+      "Health",
+      "Other",
+    ]);
     setBuckets([
       {
         id: crypto.randomUUID(),
@@ -200,7 +263,12 @@ function App() {
         name: "Holiday",
         amount: 1850,
         deposits: [
-          { amount: 1000, note: "Savings transfer", person: "Alice", date: now },
+          {
+            amount: 1000,
+            note: "Savings transfer",
+            person: "Alice",
+            date: now,
+          },
           { amount: 850, note: "Birthday money", person: "Bob", date: now },
         ],
       },
@@ -215,25 +283,121 @@ function App() {
       },
     ]);
     setExpenses([
-      { id: crypto.randomUUID(), title: "Rent", amount: 2400, category: "Rent", frequency: "monthly", assignedTo: "Shared", splits: { Alice: 50, Bob: 50 } },
-      { id: crypto.randomUUID(), title: "Electricity", amount: 180, category: "Utilities", frequency: "monthly", assignedTo: "Shared", splits: { Alice: 50, Bob: 50 } },
-      { id: crypto.randomUUID(), title: "Internet", amount: 89, category: "Utilities", frequency: "monthly", assignedTo: "Shared", splits: { Alice: 50, Bob: 50 } },
-      { id: crypto.randomUUID(), title: "Car Insurance", amount: 1200, category: "Insurance", frequency: "yearly", assignedTo: "Bob" },
-      { id: crypto.randomUUID(), title: "Health Insurance", amount: 320, category: "Insurance", frequency: "monthly", assignedTo: "Shared", splits: { Alice: 60, Bob: 40 } },
-      { id: crypto.randomUUID(), title: "Netflix", amount: 22.99, category: "Subscriptions", frequency: "monthly", assignedTo: "Shared", splits: { Alice: 50, Bob: 50 } },
-      { id: crypto.randomUUID(), title: "Spotify", amount: 16.99, category: "Subscriptions", frequency: "monthly", assignedTo: "Alice" },
-      { id: crypto.randomUUID(), title: "Gym Membership", amount: 59, category: "Health", frequency: "fortnightly", assignedTo: "Bob" },
-      { id: crypto.randomUUID(), title: "Bus Pass", amount: 45, category: "Transport", frequency: "weekly", assignedTo: "Alice" },
-      { id: crypto.randomUUID(), title: "Groceries", amount: 200, category: "Food", frequency: "weekly", assignedTo: "Shared", splits: { Alice: 55, Bob: 45 } },
+      {
+        id: crypto.randomUUID(),
+        title: "Rent",
+        amount: 2400,
+        category: "Rent",
+        frequency: "monthly",
+        assignedTo: "Shared",
+        splits: { Alice: 50, Bob: 50 },
+      },
+      {
+        id: crypto.randomUUID(),
+        title: "Electricity",
+        amount: 180,
+        category: "Utilities",
+        frequency: "monthly",
+        assignedTo: "Shared",
+        splits: { Alice: 50, Bob: 50 },
+      },
+      {
+        id: crypto.randomUUID(),
+        title: "Internet",
+        amount: 89,
+        category: "Utilities",
+        frequency: "monthly",
+        assignedTo: "Shared",
+        splits: { Alice: 50, Bob: 50 },
+      },
+      {
+        id: crypto.randomUUID(),
+        title: "Car Insurance",
+        amount: 1200,
+        category: "Insurance",
+        frequency: "yearly",
+        assignedTo: "Bob",
+      },
+      {
+        id: crypto.randomUUID(),
+        title: "Health Insurance",
+        amount: 320,
+        category: "Insurance",
+        frequency: "monthly",
+        assignedTo: "Shared",
+        splits: { Alice: 60, Bob: 40 },
+      },
+      {
+        id: crypto.randomUUID(),
+        title: "Netflix",
+        amount: 22.99,
+        category: "Subscriptions",
+        frequency: "monthly",
+        assignedTo: "Shared",
+        splits: { Alice: 50, Bob: 50 },
+      },
+      {
+        id: crypto.randomUUID(),
+        title: "Spotify",
+        amount: 16.99,
+        category: "Subscriptions",
+        frequency: "monthly",
+        assignedTo: "Alice",
+      },
+      {
+        id: crypto.randomUUID(),
+        title: "Gym Membership",
+        amount: 59,
+        category: "Health",
+        frequency: "fortnightly",
+        assignedTo: "Bob",
+      },
+      {
+        id: crypto.randomUUID(),
+        title: "Bus Pass",
+        amount: 45,
+        category: "Transport",
+        frequency: "weekly",
+        assignedTo: "Alice",
+      },
+      {
+        id: crypto.randomUUID(),
+        title: "Groceries",
+        amount: 200,
+        category: "Food",
+        frequency: "weekly",
+        assignedTo: "Shared",
+        splits: { Alice: 55, Bob: 45 },
+      },
     ]);
     setTransactions([
-      { id: crypto.randomUUID(), description: "Woolworths groceries", amount: 142.50 },
-      { id: crypto.randomUUID(), description: "Chemist Warehouse", amount: 38.95 },
-      { id: crypto.randomUUID(), description: "Uber Eats Friday", amount: 52.00 },
-      { id: crypto.randomUUID(), description: "Bunnings supplies", amount: 87.30 },
-      { id: crypto.randomUUID(), description: "JB Hi-Fi headphones", amount: 129.00 },
-      { id: crypto.randomUUID(), description: "Coffee catch-up", amount: 14.50 },
-      { id: crypto.randomUUID(), description: "Petrol", amount: 95.20 },
+      {
+        id: crypto.randomUUID(),
+        description: "Woolworths groceries",
+        amount: 142.5,
+      },
+      {
+        id: crypto.randomUUID(),
+        description: "Chemist Warehouse",
+        amount: 38.95,
+      },
+      {
+        id: crypto.randomUUID(),
+        description: "Uber Eats Friday",
+        amount: 52.0,
+      },
+      {
+        id: crypto.randomUUID(),
+        description: "Bunnings supplies",
+        amount: 87.3,
+      },
+      {
+        id: crypto.randomUUID(),
+        description: "JB Hi-Fi headphones",
+        amount: 129.0,
+      },
+      { id: crypto.randomUUID(), description: "Coffee catch-up", amount: 14.5 },
+      { id: crypto.randomUUID(), description: "Petrol", amount: 95.2 },
     ]);
     setDistributions([]);
     setProcessedHistory([]);
@@ -241,33 +405,53 @@ function App() {
 
   return (
     <div>
-      {firebaseError && (
-        <div className={s.errorBanner}>⚠ {firebaseError}</div>
-      )}
-      {saving && (
-        <div className={s.savingIndicator}>Saving…</div>
-      )}
+      {firebaseError && <div className={s.errorBanner}>⚠ {firebaseError}</div>}
+      {saving && <div className={s.savingIndicator}>Saving…</div>}
 
       {removalWarning && (
         <div className={g.overlay}>
-          <div className={g.modal} role="dialog" aria-modal="true" aria-labelledby="removal-warning-title" onClick={(e) => e.stopPropagation()}>
+          <div
+            className={g.modal}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="removal-warning-title"
+            onClick={(e) => e.stopPropagation()}
+          >
             <h2 id="removal-warning-title">Reassign Data</h2>
-            <p style={{ fontSize: "0.9rem", color: "rgba(255,255,255,0.7)", margin: "0 0 1rem" }}>
-              The following people have data assigned. Choose who to reassign their items to.
+            <p
+              style={{
+                fontSize: "0.9rem",
+                color: "rgba(255,255,255,0.7)",
+                margin: "0 0 1rem",
+              }}
+            >
+              The following people have data assigned. Choose who to reassign
+              their items to.
             </p>
             {removalWarning.removed
               .filter((p) => removalWarning.dataCounts[p]?.total > 0)
               .map((person) => {
                 const c = removalWarning.dataCounts[person];
                 const parts = [];
-                if (c.expenseCount) parts.push(`${c.expenseCount} expense${c.expenseCount > 1 ? "s" : ""}`);
-                if (c.txnCount) parts.push(`${c.txnCount} transaction${c.txnCount > 1 ? "s" : ""}`);
-                if (c.depositCount) parts.push(`${c.depositCount} deposit${c.depositCount > 1 ? "s" : ""}`);
+                if (c.expenseCount)
+                  parts.push(
+                    `${c.expenseCount} expense${c.expenseCount > 1 ? "s" : ""}`,
+                  );
+                if (c.txnCount)
+                  parts.push(
+                    `${c.txnCount} transaction${c.txnCount > 1 ? "s" : ""}`,
+                  );
+                if (c.depositCount)
+                  parts.push(
+                    `${c.depositCount} deposit${c.depositCount > 1 ? "s" : ""}`,
+                  );
                 return (
                   <div key={person} className={s.reassignRow}>
                     <div>
                       <strong>{person}</strong>
-                      <span className={s.reassignCount}>{parts.join(", ")}</span>
+                      <span className={s.reassignCount}>
+                        {parts.join(", ")}
+                      </span>
                     </div>
                     <label className={s.reassignLabel}>
                       Reassign to
@@ -276,14 +460,19 @@ function App() {
                         onChange={(e) =>
                           setRemovalWarning((prev) => ({
                             ...prev,
-                            reassignMap: { ...prev.reassignMap, [person]: e.target.value },
+                            reassignMap: {
+                              ...prev.reassignMap,
+                              [person]: e.target.value,
+                            },
                           }))
                         }
                         className={g.inputBlock}
                         style={{ width: "auto", marginLeft: "0.5rem" }}
                       >
                         {removalWarning.trimmed.map((p) => (
-                          <option key={p} value={p}>{p}</option>
+                          <option key={p} value={p}>
+                            {p}
+                          </option>
                         ))}
                       </select>
                     </label>
@@ -291,8 +480,14 @@ function App() {
                 );
               })}
             <div className={g.actions}>
-              <button type="button" onClick={() => setRemovalWarning(null)}>Cancel</button>
-              <button type="button" onClick={handleConfirmRemoval} className={g.actionBtnDangerBold}>
+              <button type="button" onClick={() => setRemovalWarning(null)}>
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={handleConfirmRemoval}
+                className={g.actionBtnDangerBold}
+              >
                 Reassign &amp; Remove
               </button>
             </div>
@@ -339,7 +534,9 @@ function App() {
                   {nameInputs.length > 1 && (
                     <button
                       type="button"
-                      onClick={() => setNameInputs(nameInputs.filter((_, j) => j !== i))}
+                      onClick={() =>
+                        setNameInputs(nameInputs.filter((_, j) => j !== i))
+                      }
                       className={s.removeBtn}
                       aria-label={`Remove ${name}`}
                     >
@@ -357,7 +554,9 @@ function App() {
                   + Add
                 </button>
               )}
-              <button type="submit" className={s.smallBtn}>Save</button>
+              <button type="submit" className={s.smallBtn}>
+                Save
+              </button>
               <button
                 type="button"
                 onClick={() => {
@@ -373,7 +572,9 @@ function App() {
             <span className={s.namesDisplay}>
               {people.length === 1
                 ? people[0]
-                : people.slice(0, -1).join(", ") + " & " + people[people.length - 1]}{" "}
+                : people.slice(0, -1).join(", ") +
+                  " & " +
+                  people[people.length - 1]}{" "}
               <button
                 onClick={() => {
                   setNameInputs([...people]);
@@ -399,9 +600,35 @@ function App() {
         </div>
       </nav>
 
-      {page === "savings" && <SavingsPage people={people} buckets={buckets} setBuckets={setBuckets} distributions={distributions} setDistributions={setDistributions} />}
-      {page === "expenses" && <ExpensesPage people={people} expenses={expenses} setExpenses={setExpenses} categories={categories} setCategories={setCategories} />}
-      {page === "reconciliation" && <ReconciliationPage people={people} buckets={buckets} setBuckets={setBuckets} transactions={transactions} setTransactions={setTransactions} processedHistory={processedHistory} setProcessedHistory={setProcessedHistory} />}
+      {page === "savings" && (
+        <SavingsPage
+          people={people}
+          buckets={buckets}
+          setBuckets={setBuckets}
+          distributions={distributions}
+          setDistributions={setDistributions}
+        />
+      )}
+      {page === "expenses" && (
+        <ExpensesPage
+          people={people}
+          expenses={expenses}
+          setExpenses={setExpenses}
+          categories={categories}
+          setCategories={setCategories}
+        />
+      )}
+      {page === "reconciliation" && (
+        <ReconciliationPage
+          people={people}
+          buckets={buckets}
+          setBuckets={setBuckets}
+          transactions={transactions}
+          setTransactions={setTransactions}
+          processedHistory={processedHistory}
+          setProcessedHistory={setProcessedHistory}
+        />
+      )}
     </div>
   );
 }

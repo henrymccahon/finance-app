@@ -152,7 +152,7 @@ function ProcessReconciliationModal({
     const data = summaryByPerson.find(([p]) => p === person)?.[1];
     if (!data) return;
     const currentTotal = (allocations[person] || []).reduce(
-      (sum, r, i) => sum + (i === index ? 0 : (parseFloat(r.amount) || 0)),
+      (sum, r, i) => sum + (i === index ? 0 : parseFloat(r.amount) || 0),
       0,
     );
     const remaining = data.total - currentTotal;
@@ -203,9 +203,21 @@ function ProcessReconciliationModal({
   }
 
   return (
-    <div className={g.overlay} onClick={onClose} onKeyDown={(e) => e.key === "Escape" && onClose()}>
-      <div className={g.modalWide} role="dialog" aria-modal="true" aria-labelledby="reconciliation-modal-title" onClick={(e) => e.stopPropagation()}>
-        <h2 id="reconciliation-modal-title" style={{ margin: "0 0 0.5rem" }}>Pay from Savings</h2>
+    <div
+      className={g.overlay}
+      onClick={onClose}
+      onKeyDown={(e) => e.key === "Escape" && onClose()}
+    >
+      <div
+        className={g.modalWide}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="reconciliation-modal-title"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <h2 id="reconciliation-modal-title" style={{ margin: "0 0 0.5rem" }}>
+          Pay from Savings
+        </h2>
 
         <div className={s.modeTabs}>
           <button
@@ -258,12 +270,16 @@ function ProcessReconciliationModal({
                     <div key={i} className={s.itemRow}>
                       <div className={s.itemDesc}>
                         <span>{item.description}</span>
-                        <span className={s.itemAmt}>${item.owed.toFixed(2)}</span>
+                        <span className={s.itemAmt}>
+                          ${item.owed.toFixed(2)}
+                        </span>
                       </div>
                       <select
                         className={s.itemSelect}
                         value={assigns[i] || ""}
-                        onChange={(e) => setItemBucket(person, i, e.target.value)}
+                        onChange={(e) =>
+                          setItemBucket(person, i, e.target.value)
+                        }
                       >
                         <option value="">Select account…</option>
                         {buckets.map((b) => (
@@ -280,19 +296,24 @@ function ProcessReconciliationModal({
                     {buckets
                       .filter((b) => {
                         const used = assigns.reduce(
-                          (sum, bId, i) => sum + (bId === b.id ? data.items[i]?.owed || 0 : 0),
+                          (sum, bId, i) =>
+                            sum + (bId === b.id ? data.items[i]?.owed || 0 : 0),
                           0,
                         );
                         return used > 0;
                       })
                       .map((b) => {
                         const used = assigns.reduce(
-                          (sum, bId, i) => sum + (bId === b.id ? data.items[i]?.owed || 0 : 0),
+                          (sum, bId, i) =>
+                            sum + (bId === b.id ? data.items[i]?.owed || 0 : 0),
                           0,
                         );
                         const over = used > b.amount + 0.01;
                         return (
-                          <span key={b.id} className={over ? s.usageOver : s.usageOk}>
+                          <span
+                            key={b.id}
+                            className={over ? s.usageOver : s.usageOk}
+                          >
                             {b.name}: ${used.toFixed(2)}
                             {over && " (insufficient)"}
                           </span>
@@ -395,10 +416,7 @@ function ProcessReconciliationModal({
             {confirmProcess ? (
               <span className={g.confirmText}>
                 Pay from savings?{" "}
-                <button
-                  type="submit"
-                  className={g.runBtn}
-                >
+                <button type="submit" className={g.runBtn}>
                   Yes, pay
                 </button>
                 <button

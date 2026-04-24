@@ -5,7 +5,15 @@ import { equalSplits, getSplits } from "../utils/splits";
 import s from "../styles/ReconciliationPage.module.css";
 import g from "../styles/shared.module.css";
 
-function ReconciliationPage({ people, buckets, setBuckets, transactions, setTransactions, processedHistory, setProcessedHistory }) {
+function ReconciliationPage({
+  people,
+  buckets,
+  setBuckets,
+  transactions,
+  setTransactions,
+  processedHistory,
+  setProcessedHistory,
+}) {
   const [isAddOpen, setIsAddOpen] = useState(false);
   const [editingTxn, setEditingTxn] = useState(null);
   const [confirmDeleteId, setConfirmDeleteId] = useState(null);
@@ -18,10 +26,7 @@ function ReconciliationPage({ people, buckets, setBuckets, transactions, setTran
   const [isProcessOpen, setIsProcessOpen] = useState(false);
 
   function handleAdd(txn) {
-    setTransactions((prev) => [
-      { ...txn, id: crypto.randomUUID() },
-      ...prev,
-    ]);
+    setTransactions((prev) => [{ ...txn, id: crypto.randomUUID() }, ...prev]);
   }
 
   function handleUpdate(updated) {
@@ -33,7 +38,11 @@ function ReconciliationPage({ people, buckets, setBuckets, transactions, setTran
 
   function handleDelete(id) {
     setTransactions((prev) => prev.filter((t) => t.id !== id));
-    setSelectedIds((prev) => { const next = new Set(prev); next.delete(id); return next; });
+    setSelectedIds((prev) => {
+      const next = new Set(prev);
+      next.delete(id);
+      return next;
+    });
   }
 
   function startSettling() {
@@ -42,9 +51,10 @@ function ReconciliationPage({ people, buckets, setBuckets, transactions, setTran
     // Initialize default assignments: equal split if >1 person, else sole person
     const init = {};
     for (const t of transactions) {
-      init[t.id] = people.length > 1
-        ? { paidBy: "Shared", splits: equalSplits(people) }
-        : { paidBy: people[0], splits: undefined };
+      init[t.id] =
+        people.length > 1
+          ? { paidBy: "Shared", splits: equalSplits(people) }
+          : { paidBy: people[0], splits: undefined };
     }
     setAssignments(init);
   }
@@ -104,12 +114,23 @@ function ReconciliationPage({ people, buckets, setBuckets, transactions, setTran
           const amt = (t.amount * (sp[p] ?? 0)) / 100;
           if (amt > 0) {
             map[p].total += amt;
-            map[p].items.push({ description: t.description, full: t.amount, owed: amt, shared: true, pct: sp[p] ?? 0 });
+            map[p].items.push({
+              description: t.description,
+              full: t.amount,
+              owed: amt,
+              shared: true,
+              pct: sp[p] ?? 0,
+            });
           }
         }
       } else if (map[a.paidBy]) {
         map[a.paidBy].total += t.amount;
-        map[a.paidBy].items.push({ description: t.description, full: t.amount, owed: t.amount, shared: false });
+        map[a.paidBy].items.push({
+          description: t.description,
+          full: t.amount,
+          owed: t.amount,
+          shared: false,
+        });
       }
     }
     const total = Object.values(map).reduce((a, b) => a + b.total, 0);
@@ -257,7 +278,10 @@ function ReconciliationPage({ people, buckets, setBuckets, transactions, setTran
                     onClick={() => {
                       const next = { ...assignments };
                       for (const id of selectedIds) {
-                        next[id] = { paidBy: "Shared", splits: equalSplits(people) };
+                        next[id] = {
+                          paidBy: "Shared",
+                          splits: equalSplits(people),
+                        };
                       }
                       setAssignments(next);
                     }}
@@ -274,7 +298,10 @@ function ReconciliationPage({ people, buckets, setBuckets, transactions, setTran
               const isSelected = selectedIds.has(txn.id);
               const a = assignments[txn.id];
               return (
-                <div key={txn.id} className={`${s.row} ${isSettling && isSelected ? s.rowSelected : ""}`}>
+                <div
+                  key={txn.id}
+                  className={`${s.row} ${isSettling && isSelected ? s.rowSelected : ""}`}
+                >
                   <div className={s.rowMain}>
                     {isSettling && (
                       <input
@@ -299,16 +326,24 @@ function ReconciliationPage({ people, buckets, setBuckets, transactions, setTran
                           const val = e.target.value;
                           updateAssignment(txn.id, "paidBy", val);
                           if (val === "Shared") {
-                            updateAssignment(txn.id, "splits", equalSplits(people));
+                            updateAssignment(
+                              txn.id,
+                              "splits",
+                              equalSplits(people),
+                            );
                           } else {
                             updateAssignment(txn.id, "splits", undefined);
                           }
                         }}
                         className={s.assignSelect}
                       >
-                        {people.length > 1 && <option value="Shared">Shared (split)</option>}
+                        {people.length > 1 && (
+                          <option value="Shared">Shared (split)</option>
+                        )}
                         {people.map((p) => (
-                          <option key={p} value={p}>{p}</option>
+                          <option key={p} value={p}>
+                            {p}
+                          </option>
                         ))}
                       </select>
 
@@ -323,7 +358,13 @@ function ReconciliationPage({ people, buckets, setBuckets, transactions, setTran
                                 max="100"
                                 step="1"
                                 value={a.splits?.[p] ?? 0}
-                                onChange={(e) => updateSplitPct(txn.id, p, Number(e.target.value))}
+                                onChange={(e) =>
+                                  updateSplitPct(
+                                    txn.id,
+                                    p,
+                                    Number(e.target.value),
+                                  )
+                                }
                                 className={s.inlineSplitInput}
                               />
                               <span className={s.inlineSplitPct}>%</span>
@@ -352,7 +393,10 @@ function ReconciliationPage({ people, buckets, setBuckets, transactions, setTran
                               setConfirmDeleteId(null);
                             }}
                             className={g.actionBtnDangerBold}
-                            style={{ padding: "0.2rem 0.5rem", fontSize: "0.75rem" }}
+                            style={{
+                              padding: "0.2rem 0.5rem",
+                              fontSize: "0.75rem",
+                            }}
                           >
                             Yes
                           </button>
@@ -367,7 +411,10 @@ function ReconciliationPage({ people, buckets, setBuckets, transactions, setTran
                         <button
                           onClick={() => setConfirmDeleteId(txn.id)}
                           className={g.actionBtnDanger}
-                          style={{ padding: "0.2rem 0.5rem", fontSize: "0.75rem" }}
+                          style={{
+                            padding: "0.2rem 0.5rem",
+                            fontSize: "0.75rem",
+                          }}
                         >
                           Delete
                         </button>
@@ -381,10 +428,17 @@ function ReconciliationPage({ people, buckets, setBuckets, transactions, setTran
 
           {/* Grand total */}
           <div className={s.grandTotalBar}>
-            <span>{isSettling ? `Selected: ${selectedIds.size} of ${transactions.length}` : `${transactions.length} transaction${transactions.length !== 1 ? "s" : ""}`}</span>
             <span>
               {isSettling
-                ? `$${transactions.filter((t) => selectedIds.has(t.id)).reduce((s, t) => s + t.amount, 0).toFixed(2)}`
+                ? `Selected: ${selectedIds.size} of ${transactions.length}`
+                : `${transactions.length} transaction${transactions.length !== 1 ? "s" : ""}`}
+            </span>
+            <span>
+              {isSettling
+                ? `$${transactions
+                    .filter((t) => selectedIds.has(t.id))
+                    .reduce((s, t) => s + t.amount, 0)
+                    .toFixed(2)}`
                 : `$${grandTotal.toFixed(2)}`}
             </span>
           </div>
@@ -475,8 +529,15 @@ function ReconciliationPage({ people, buckets, setBuckets, transactions, setTran
                 })}
               </div>
               <details className={s.historyDetails}>
-                <summary style={{ cursor: "pointer", color: "#888", fontSize: "0.8rem" }}>
-                  {(record.transactions || []).length} transaction{(record.transactions || []).length !== 1 ? "s" : ""}
+                <summary
+                  style={{
+                    cursor: "pointer",
+                    color: "#888",
+                    fontSize: "0.8rem",
+                  }}
+                >
+                  {(record.transactions || []).length} transaction
+                  {(record.transactions || []).length !== 1 ? "s" : ""}
                 </summary>
                 <div style={{ marginTop: "0.35rem" }}>
                   {(record.transactions || []).map((t, i) => (

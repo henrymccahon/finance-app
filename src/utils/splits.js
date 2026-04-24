@@ -5,9 +5,10 @@ export function equalSplits(people) {
   const base = Math.floor((100 / people.length) * 100) / 100;
   const splits = {};
   people.forEach((p, i) => {
-    splits[p] = i === people.length - 1
-      ? Math.round((100 - base * (people.length - 1)) * 100) / 100
-      : base;
+    splits[p] =
+      i === people.length - 1
+        ? Math.round((100 - base * (people.length - 1)) * 100) / 100
+        : base;
   });
   return splits;
 }
@@ -19,7 +20,10 @@ export function equalSplits(people) {
 export function getSplits(item, people) {
   if (item.splits) return item.splits;
   if (item.splitPercent != null && people.length >= 2) {
-    return { [people[0]]: item.splitPercent, [people[1]]: 100 - item.splitPercent };
+    return {
+      [people[0]]: item.splitPercent,
+      [people[1]]: 100 - item.splitPercent,
+    };
   }
   return equalSplits(people);
 }
@@ -31,5 +35,5 @@ export function getPersonShare(item, person, people) {
   const assignedField = item.assignedTo ?? item.paidBy;
   if (assignedField !== "Shared") return item.amount;
   const splits = getSplits(item, people);
-  return item.amount * (splits[person] ?? 0) / 100;
+  return (item.amount * (splits[person] ?? 0)) / 100;
 }

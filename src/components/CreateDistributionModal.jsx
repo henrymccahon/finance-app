@@ -57,9 +57,21 @@ function CreateDistributionModal({
   );
 
   return (
-    <div className={g.overlay} onClick={onClose} onKeyDown={(e) => e.key === "Escape" && onClose()}>
-      <div className={g.modalScrollable} role="dialog" aria-modal="true" aria-labelledby="distribution-modal-title" onClick={(e) => e.stopPropagation()}>
-        <h2 id="distribution-modal-title">{existing ? "Edit" : "Create"} Savings Plan</h2>
+    <div
+      className={g.overlay}
+      onClick={onClose}
+      onKeyDown={(e) => e.key === "Escape" && onClose()}
+    >
+      <div
+        className={g.modalScrollable}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="distribution-modal-title"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <h2 id="distribution-modal-title">
+          {existing ? "Edit" : "Create"} Savings Plan
+        </h2>
 
         <form onSubmit={handleSubmit}>
           <label className={g.label}>
@@ -107,9 +119,7 @@ function CreateDistributionModal({
             <button type="button" onClick={onClose}>
               Cancel
             </button>
-            <button type="submit">
-              {existing ? "Save" : "Create"}
-            </button>
+            <button type="submit">{existing ? "Save" : "Create"}</button>
           </div>
         </form>
       </div>
