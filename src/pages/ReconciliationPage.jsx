@@ -145,7 +145,7 @@ function ReconciliationPage({
       if (!a || !a.paidBy) return false;
       if (a.paidBy === "Shared" && a.splits) {
         const total = Object.values(a.splits).reduce((s, v) => s + v, 0);
-        if (Math.round(total) !== 100) return false;
+        if (Math.abs(total - 100) > 0.01) return false;
       }
     }
     return true;

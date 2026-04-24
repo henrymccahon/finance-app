@@ -18,8 +18,6 @@ const DEFAULT_CATEGORIES = [
   "Other",
 ];
 
-
-
 function ExpensesPage({
   people,
   expenses,

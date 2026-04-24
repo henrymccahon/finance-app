@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { FREQUENCY_MULTIPLIERS } from "../utils/constants";
 import { getPersonShare } from "../utils/splits";
 import s from "../styles/SalaryPage.module.css";
@@ -109,6 +109,21 @@ function SalaryPage({
     });
   }
 
+  // Auto-select first person with a salary
+  const activeSalaries = useMemo(
+    () => salaries.filter((sal) => sal.amount > 0),
+    [salaries],
+  );
+
+  useEffect(() => {
+    if (
+      activeSalaries.length > 0 &&
+      !activeSalaries.find((sal) => sal.person === activePerson)
+    ) {
+      setActivePerson(activeSalaries[0].person);
+    }
+  }, [activeSalaries, activePerson]);
+
   return (
     <section>
       <h1>Pay Distribution</h1>
@@ -161,13 +176,11 @@ function SalaryPage({
 
       {/* Per-person tab bar + active section */}
       {(() => {
-        const activeSalaries = salaries.filter((sal) => sal.amount > 0);
-        // Auto-select first person if none selected or selected person has no salary
-        const selected =
-          activeSalaries.find((sal) => sal.person === activePerson)
-            ? activePerson
-            : activeSalaries[0]?.person ?? null;
-        if (selected && selected !== activePerson) setActivePerson(selected);
+        const selected = activeSalaries.find(
+          (sal) => sal.person === activePerson,
+        )
+          ? activePerson
+          : (activeSalaries[0]?.person ?? null);
         const sal = activeSalaries.find((s) => s.person === selected);
         if (!sal || activeSalaries.length === 0) return null;
 
@@ -180,10 +193,7 @@ function SalaryPage({
           (sum, a) => sum + (a.required || 0),
           0,
         );
-        const totalActual = allocs.reduce(
-          (sum, a) => sum + (a.actual || 0),
-          0,
-        );
+        const totalActual = allocs.reduce((sum, a) => sum + (a.actual || 0), 0);
         const remaining = sal.amount - totalActual;
 
         return (
@@ -202,7 +212,13 @@ function SalaryPage({
               </div>
             )}
 
-            <div className={activeSalaries.length > 1 ? s.personSectionTabbed : s.personSection}>
+            <div
+              className={
+                activeSalaries.length > 1
+                  ? s.personSectionTabbed
+                  : s.personSection
+              }
+            >
               {activeSalaries.length === 1 && (
                 <h2 className={s.personHeading}>{sal.person}</h2>
               )}
@@ -211,9 +227,7 @@ function SalaryPage({
               <div className={s.infoBanner}>
                 <div className={s.infoItem}>
                   <span className={s.infoLabel}>Take-Home</span>
-                  <span className={s.infoValue}>
-                    ${sal.amount.toFixed(2)}
-                  </span>
+                  <span className={s.infoValue}>${sal.amount.toFixed(2)}</span>
                 </div>
                 <div className={s.infoItem}>
                   <span className={s.infoLabel}>
@@ -259,10 +273,7 @@ function SalaryPage({
                       </thead>
                       <tbody>
                         {buckets.map((bucket) => {
-                          const alloc = getPersonAlloc(
-                            sal.person,
-                            bucket.id,
-                          );
+                          const alloc = getPersonAlloc(sal.person, bucket.id);
                           const required = alloc?.required || 0;
                           const key = editKey(sal.person, bucket.id);
                           const actual =
@@ -419,10 +430,7 @@ function SalaryPage({
                         {salaries
                           .filter((sal) => sal.amount > 0)
                           .map((sal) => {
-                            const alloc = getPersonAlloc(
-                              sal.person,
-                              bucket.id,
-                            );
+                            const alloc = getPersonAlloc(sal.person, bucket.id);
                             const actual = alloc?.actual || 0;
                             bucketTotal += actual;
                             return (
@@ -431,13 +439,8 @@ function SalaryPage({
                               </td>
                             );
                           })}
-                        <td
-                          className={g.tdRight}
-                          style={{ fontWeight: 600 }}
-                        >
-                          {bucketTotal
-                            ? `$${bucketTotal.toFixed(2)}`
-                            : "—"}
+                        <td className={g.tdRight} style={{ fontWeight: 600 }}>
+                          {bucketTotal ? `$${bucketTotal.toFixed(2)}` : "—"}
                         </td>
                       </tr>
                     );
@@ -468,10 +471,7 @@ function SalaryPage({
                           const allocs = getAllocsForPerson(sal.person);
                           return (
                             sum +
-                            allocs.reduce(
-                              (acc, a) => acc + (a.actual || 0),
-                              0,
-                            )
+                            allocs.reduce((acc, a) => acc + (a.actual || 0), 0)
                           );
                         }, 0)
                         .toFixed(2)}

@@ -66,13 +66,8 @@ function App() {
     histErr,
     histSaving,
   ] = useFirestoreState(uid, "processedHistory", []);
-  const [
-    salaryConfig,
-    setSalaryConfig,
-    salaryLoaded,
-    salaryErr,
-    salarySaving,
-  ] = useFirestoreState(uid, "salaryConfig", { salaries: [], allocations: [] });
+  const [salaryConfig, setSalaryConfig, salaryLoaded, salaryErr, salarySaving] =
+    useFirestoreState(uid, "salaryConfig", { salaries: [], allocations: [] });
 
   const loaded =
     peopleLoaded &&

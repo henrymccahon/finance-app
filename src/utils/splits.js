@@ -30,10 +30,31 @@ export function getSplits(item, people) {
 
 /**
  * Get one person's dollar share of a shared item.
+ * Uses floor-and-remainder to avoid double-rounding pennies.
  */
 export function getPersonShare(item, person, people) {
   const assignedField = item.assignedTo ?? item.paidBy;
   if (assignedField !== "Shared") return item.amount;
   const splits = getSplits(item, people);
-  return (item.amount * (splits[person] ?? 0)) / 100;
+  const pct = splits[person] ?? 0;
+
+  // Find all people in this split, sorted so the remainder goes to the last
+  const entries = Object.entries(splits).sort(([a], [b]) =>
+    a.localeCompare(b),
+  );
+  const lastPerson = entries[entries.length - 1]?.[0];
+
+  if (person === lastPerson) {
+    // Last person absorbs remainder so total === item.amount exactly
+    const othersTotal = entries
+      .filter(([p]) => p !== lastPerson)
+      .reduce(
+        (sum, [, pctVal]) =>
+          sum + Math.floor(item.amount * pctVal) / 100,
+        0,
+      );
+    return Math.round((item.amount - othersTotal) * 100) / 100;
+  }
+
+  return Math.floor(item.amount * pct) / 100;
 }
